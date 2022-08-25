@@ -8,7 +8,7 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CreateRoomDto } from './dto/create-room.dto';
+import { CreateRoomDto } from './rooms.dto';
 import { Room } from './rooms.entity';
 import { RoomsService } from './rooms.service';
 

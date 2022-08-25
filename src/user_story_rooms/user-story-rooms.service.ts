@@ -1,54 +1,43 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserStoryRoomDto } from './dto/create-user-story-room.dto';
+import { CreateUserStoryRoomDto, UpdateUserStoryRoomDto } from './user-story-rooms.dto';
 import { UserStoryRoom } from './user-story-rooms.entity';
 
 @Injectable()
 export class UserStoryRoomsService {
   constructor(
     @InjectRepository(UserStoryRoom)
-    private readonly userStoryRoomsRepository: Repository<UserStoryRoom>,
+    private readonly usrsRepository: Repository<UserStoryRoom>,
   ) {}
 
-  // create(
-  //   createUserStoryRoomDto: CreateUserStoryRoomDto,
-  // ): Promise<UserStoryRoom> {
-  //   const userUserStoryRoom = new UserStoryRoom();
-  //   userUserStoryRoom.user_id = createUserStoryRoomDto.userId;
-  //   userUserStoryRoom.story_id = createUserStoryRoomDto.storyId;
-  //   userUserStoryRoom.room_id = createUserStoryRoomDto.roomId;
-  //   userUserStoryRoom.is_online = createUserStoryRoomDto.isOnline;
-  //   userUserStoryRoom.story_point = createUserStoryRoomDto.storyPoint;
+  create(createUserStoryRoomDto: CreateUserStoryRoomDto): Promise<UserStoryRoom> {
+    const usr = new UserStoryRoom();
+    usr.user_id = createUserStoryRoomDto.userId;
+    usr.story_id = createUserStoryRoomDto.storyId;
+    usr.room_id = createUserStoryRoomDto.roomId;
+    usr.is_online = createUserStoryRoomDto.isOnline || true;
 
-  //   return this.userStoryRoomsRepository.save(userUserStoryRoom);
-  // }
+    return this.usrsRepository.save(usr);
+  }
 
-  // async findAll(): Promise<UserStoryRoom[]> {
-  //   return this.userStoryRoomsRepository.find();
-  // }
+  async update(updateUserStoryRoomDto: UpdateUserStoryRoomDto): Promise<UserStoryRoom> {
+    const { userId: user_id, storyId: story_id, roomId: room_id, isOnline: is_online, storyPoint: story_point } = updateUserStoryRoomDto;
+    const usr = await this.usrsRepository.findOneBy({ user_id, story_id, room_id });
+    usr.is_online = is_online || usr.is_online;
+    usr.story_point = story_point || usr.story_point;
+    return this.usrsRepository.save(usr);
+  }
 
-  // findOne(
-  //   user_id: string,
-  //   story_id: string,
-  //   room_id: number,
-  // ): Promise<UserStoryRoom> {
-  //   return this.userStoryRoomsRepository.findOneBy({
-  //     user_id,
-  //     story_id,
-  //     room_id,
-  //   });
-  // }
+  async findAll(): Promise<UserStoryRoom[]> {
+    return this.usrsRepository.find();
+  }
 
-  // async remove(
-  //   user_id: string,
-  //   story_id: string,
-  //   room_id: number,
-  // ): Promise<void> {
-  //   await this.userStoryRoomsRepository.delete({
-  //     user_id,
-  //     story_id,
-  //     room_id,
-  //   });
-  // }
+  findOne(user_id: string, story_id: string, room_id: number): Promise<UserStoryRoom> {
+    return this.usrsRepository.findOneBy({ user_id, story_id, room_id });
+  }
+
+  async remove(user_id: string, story_id: string, room_id: number): Promise<void> {
+    await this.usrsRepository.delete({ user_id, story_id, room_id });
+  }
 }

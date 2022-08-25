@@ -1,8 +1,8 @@
 {
   "files.exclude": {
     "node_modules/": true,
-    "dist/": true,
-    "src/*/*.spec.ts": true
+    "dist/": true
+    // "src/*/*.spec.ts": true
     // "nginx/": true,
     // ".swc/": true,
     // "tsconfig.tsbuildinfo": true,

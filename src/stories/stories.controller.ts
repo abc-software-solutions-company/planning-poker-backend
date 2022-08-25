@@ -6,9 +6,10 @@ import {
   Param,
   Post,
   ParseIntPipe,
+  Patch,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CreateStoryDto } from './dto/create-story.dto';
+import { CreateStoryDto, UpdateStoryDto } from './stories.dto';
 import { Story } from './stories.entity';
 import { StoriesService } from './stories.service';
 
@@ -21,7 +22,10 @@ export class StoriesController {
   create(@Body() createStoryDto: CreateStoryDto): Promise<Story> {
     return this.storiesService.create(createStoryDto);
   }
-
+  @Patch()
+  update(@Body() updateStoryDto: UpdateStoryDto): Promise<Story> {
+    return this.storiesService.update(updateStoryDto);
+  }
   @Get()
   findAll(): Promise<Story[]> {
     return this.storiesService.findAll();

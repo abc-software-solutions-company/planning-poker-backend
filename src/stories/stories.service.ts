@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateStoryDto } from './dto/create-story.dto';
+import { CreateStoryDto, UpdateStoryDto } from './stories.dto';
 import { Story } from './stories.entity';
 
 @Injectable()
@@ -20,6 +20,14 @@ export class StoriesService {
 
   async findAll(): Promise<Story[]> {
     return this.storiesRepository.find();
+  }
+
+  async update(updateStoryDto: UpdateStoryDto): Promise<Story> {
+    const { id, name, point } = updateStoryDto;
+    const story = await this.storiesRepository.findOneBy({ id });
+    story.name = name || story.name;
+    story.point = point || story.point;
+    return this.storiesRepository.save(story);
   }
 
   findOne(id: string): Promise<Story> {

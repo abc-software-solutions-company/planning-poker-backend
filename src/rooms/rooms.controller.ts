@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  ParseIntPipe,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, ParseIntPipe } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateRoomDto } from './rooms.dto';
 import { Room } from './rooms.entity';
@@ -28,7 +20,7 @@ export class RoomsController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number): Promise<Room> {
+  findOne(@Param('id') id: number): Promise<Room> {
     return this.roomsService.findOne(id);
   }
 

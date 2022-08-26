@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  ParseIntPipe,
-  Patch,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, ParseIntPipe, Patch } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateStoryDto, UpdateStoryDto } from './stories.dto';
 import { Story } from './stories.entity';
@@ -32,7 +23,7 @@ export class StoriesController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: string): Promise<Story> {
+  findOne(@Param('id') id: string): Promise<Story> {
     return this.storiesService.findOne(id);
   }
 

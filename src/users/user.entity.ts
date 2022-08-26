@@ -1,12 +1,5 @@
 import { UserStoryRoom } from 'src/user_story_rooms/user-story-rooms.entity';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class User {
@@ -15,9 +8,6 @@ export class User {
 
   @Column({ type: 'varchar', length: 32 })
   name: string;
-
-  @Column({ type: 'boolean', default: false })
-  is_host: boolean;
 
   @OneToMany(() => UserStoryRoom, (usr) => usr.user)
   usrs: UserStoryRoom[];

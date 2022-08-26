@@ -1,12 +1,5 @@
 import { UserStoryRoom } from 'src/user_story_rooms/user-story-rooms.entity';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class Story {
@@ -17,7 +10,7 @@ export class Story {
   name: string;
 
   @Column({ type: 'double precision', nullable: true })
-  point: number;
+  avg_point: number;
 
   @OneToMany(() => UserStoryRoom, (usr) => usr.story)
   usrs: UserStoryRoom[];

@@ -1,8 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Post, ParseIntPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Patch } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CreateRoomDto } from './rooms.dto';
-import { Room } from './rooms.entity';
-import { RoomsService } from './rooms.service';
+import { CreateRoomDto, UpdateRoomDto } from './room.dto';
+import { Room } from './room.entity';
+import { RoomsService } from './room.service';
 
 @ApiTags('Rooms')
 @Controller('rooms')
@@ -12,6 +12,10 @@ export class RoomsController {
   @Post()
   create(@Body() createRoomDto: CreateRoomDto): Promise<Room> {
     return this.roomsService.create(createRoomDto);
+  }
+  @Patch()
+  update(@Body() updateRoomDto: UpdateRoomDto): Promise<Room> {
+    return this.roomsService.update(updateRoomDto);
   }
 
   @Get()

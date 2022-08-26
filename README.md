@@ -1,9 +1,21 @@
 # plan-pocker-cms
 
+## first run
+
+```bash
 cp .envsample .env
+```
 
-docker-compose up -d
-
+```bash
 yarn
+```
 
+```bash
 yarn start:dev
+```
+
+## next runs
+
+```bash
+yarn dev
+```

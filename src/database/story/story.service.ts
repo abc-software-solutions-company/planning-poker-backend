@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateStoryDto, UpdateStoryDto } from './stories.dto';
-import { Story } from './stories.entity';
+import { CreateStoryDto, UpdateStoryDto } from './story.dto';
+import { Story } from './story.entity';
 
 @Injectable()
 export class StoriesService {
@@ -18,21 +18,22 @@ export class StoriesService {
     return this.storiesRepository.save(story);
   }
 
-  async findAll(): Promise<Story[]> {
-    return this.storiesRepository.find();
-  }
-
   async update(updateStoryDto: UpdateStoryDto): Promise<Story> {
-    const { id, name, avgPoint: avg_point } = updateStoryDto;
+    const { id, name, avgPoint } = updateStoryDto;
     const story = await this.storiesRepository.findOneBy({ id });
     story.name = name || story.name;
-    story.avg_point = avg_point || story.avg_point;
+    story.avgPoint = avgPoint || story.avgPoint;
     return this.storiesRepository.save(story);
+  }
+
+  async findAll(): Promise<Story[]> {
+    return this.storiesRepository.find();
   }
 
   findOne(id: string): Promise<Story> {
     return this.storiesRepository.findOneBy({ id: id });
   }
+
   async remove(id: string): Promise<void> {
     await this.storiesRepository.delete(id);
   }

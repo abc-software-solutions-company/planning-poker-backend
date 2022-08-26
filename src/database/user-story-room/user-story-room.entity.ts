@@ -1,48 +1,47 @@
-import { Room } from 'src/rooms/rooms.entity';
-import { Story } from 'src/stories/stories.entity';
-import { User } from 'src/users/user.entity';
+import { Room } from 'src/database/room/room.entity';
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn, UpdateDateColumn } from 'typeorm';
+import { Story } from '../story/story.entity';
+import { User } from '../user/user.entity';
 
 @Entity()
 export class UserStoryRoom {
   @PrimaryColumn()
-  user_id: string;
+  userId: string;
+
   @PrimaryColumn()
-  story_id: string;
+  storyId: string;
+
   @PrimaryColumn()
-  room_id: number;
+  roomId: number;
 
   @ManyToOne(() => User, (user) => user.usrs)
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn({ name: 'userId' })
   user: User;
 
-  @ManyToOne(() => Story, (story) => story.id)
-  @JoinColumn({ name: 'story_id' })
-  story: Story;
-
-  @ManyToOne(() => Room, (room) => room.id)
-  @JoinColumn({ name: 'room_id' })
-  room: Room;
-
   @Column({ type: 'boolean', default: true })
-  is_online: boolean;
-
-  @Column({ type: 'boolean', default: false })
-  is_host: boolean;
+  isOnline: boolean;
 
   @Column({ type: 'int', nullable: true })
-  story_point: number;
+  storyPoint: number;
 
   @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
     onUpdate: 'CURRENT_TIMESTAMP(6)',
   })
-  updated_at: Date;
+  updatedAt: Date;
+
+  @ManyToOne(() => Story, (story) => story.id)
+  @JoinColumn({ name: 'storyId' })
+  story: Story;
+
+  @ManyToOne(() => Room, (room) => room.id)
+  @JoinColumn({ name: 'roomId' })
+  room: Room;
 }

@@ -1,5 +1,6 @@
-import { UserStoryRoom } from 'src/user_story_rooms/user-story-rooms.entity';
+import { Room } from 'src/database/room/room.entity';
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { UserStoryRoom } from '../user-story-room/user-story-room.entity';
 
 @Entity()
 export class User {
@@ -9,19 +10,22 @@ export class User {
   @Column({ type: 'varchar', length: 32 })
   name: string;
 
-  @OneToMany(() => UserStoryRoom, (usr) => usr.user)
-  usrs: UserStoryRoom[];
-
   @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
     onUpdate: 'CURRENT_TIMESTAMP(6)',
   })
-  updated_at: Date;
+  updatedAt: Date;
+
+  @OneToMany(() => Room, (room) => room.user)
+  room: Room[];
+
+  @OneToMany(() => UserStoryRoom, (usr) => usr.user)
+  usrs: UserStoryRoom[];
 }

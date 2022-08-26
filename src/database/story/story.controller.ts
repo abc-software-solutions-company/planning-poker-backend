@@ -1,8 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Post, ParseIntPipe, Patch } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Patch } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CreateStoryDto, UpdateStoryDto } from './stories.dto';
-import { Story } from './stories.entity';
-import { StoriesService } from './stories.service';
+import { CreateStoryDto, UpdateStoryDto } from './story.dto';
+import { Story } from './story.entity';
+import { StoriesService } from './story.service';
 
 @ApiTags('Stories')
 @Controller('stories')

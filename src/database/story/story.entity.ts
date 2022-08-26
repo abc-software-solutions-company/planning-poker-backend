@@ -1,5 +1,5 @@
-import { UserStoryRoom } from 'src/user_story_rooms/user-story-rooms.entity';
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { UserStoryRoom } from '../user-story-room/user-story-room.entity';
 
 @Entity()
 export class Story {
@@ -10,21 +10,21 @@ export class Story {
   name: string;
 
   @Column({ type: 'double precision', nullable: true })
-  avg_point: number;
-
-  @OneToMany(() => UserStoryRoom, (usr) => usr.story)
-  usrs: UserStoryRoom[];
+  avgPoint: number;
 
   @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
     onUpdate: 'CURRENT_TIMESTAMP(6)',
   })
-  updated_at: Date;
+  updatedAt: Date;
+
+  @OneToMany(() => UserStoryRoom, (usr) => usr.story)
+  usrs: UserStoryRoom[];
 }

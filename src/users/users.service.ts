@@ -18,10 +18,9 @@ export class UsersService {
   }
 
   async update(updateUserDto: UpdateUserDto): Promise<User> {
-    const { id, name, isHost } = updateUserDto;
+    const { id, name } = updateUserDto;
     const user = await this.usersRepository.findOneBy({ id });
     user.name = name || user.name;
-    user.is_host = isHost || user.is_host;
     return this.usersRepository.save(user);
   }
 

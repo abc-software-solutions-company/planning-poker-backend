@@ -23,10 +23,10 @@ export class StoriesService {
   }
 
   async update(updateStoryDto: UpdateStoryDto): Promise<Story> {
-    const { id, name, point } = updateStoryDto;
+    const { id, name, avgPoint: avg_point } = updateStoryDto;
     const story = await this.storiesRepository.findOneBy({ id });
     story.name = name || story.name;
-    story.point = point || story.point;
+    story.avg_point = avg_point || story.avg_point;
     return this.storiesRepository.save(story);
   }
 

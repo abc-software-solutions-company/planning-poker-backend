@@ -1,15 +1,7 @@
 import { Room } from 'src/rooms/rooms.entity';
 import { Story } from 'src/stories/stories.entity';
 import { User } from 'src/users/user.entity';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class UserStoryRoom {
@@ -32,8 +24,11 @@ export class UserStoryRoom {
   @JoinColumn({ name: 'room_id' })
   room: Room;
 
-  @Column({ type: 'boolean' })
+  @Column({ type: 'boolean', default: true })
   is_online: boolean;
+
+  @Column({ type: 'boolean', default: false })
+  is_host: boolean;
 
   @Column({ type: 'int', nullable: true })
   story_point: number;

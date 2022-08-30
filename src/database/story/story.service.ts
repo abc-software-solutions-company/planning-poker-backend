@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { UserStoryRoom } from '../user-story-room/user-story-room.entity';
+import { UserStoryRoomsService } from '../user-story-room/user-story-room.service';
 import { CreateStoryDto, UpdateStoryDto } from './story.dto';
 import { Story } from './story.entity';
 
@@ -22,7 +24,18 @@ export class StoriesService {
     const { id, name, avgPoint } = updateStoryDto;
     const story = await this.storiesRepository.findOneBy({ id });
     story.name = name || story.name;
-    story.avgPoint = avgPoint || story.avgPoint;
+    story.avgPoint = avgPoint === undefined ? story.avgPoint : avgPoint;
+    return this.storiesRepository.save(story);
+  }
+
+  async finish(id: string): Promise<Story> {
+    const story = await this.storiesRepository
+      .createQueryBuilder('story')
+      .leftJoinAndSelect('story.usrs', 'usrs')
+      .where('story.id=:id', { id })
+      .orderBy('story.createdAt', 'DESC')
+      .getOne();
+    story.avgPoint = story.usrs.reduce((previousValue, currentValue) => previousValue + currentValue.storyPoint, 0);
     return this.storiesRepository.save(story);
   }
 

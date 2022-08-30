@@ -24,7 +24,6 @@ export class UserStoryRoomsService {
 
   async update(updateUserStoryRoomDto: UpdateUserStoryRoomDto): Promise<UserStoryRoom> {
     const { userId, storyId, roomId, isOnline, storyPoint } = updateUserStoryRoomDto;
-    console.log('🚀 ~ file: user-story-room.service.ts ~ line 27 ~ UserStoryRoomsService ~ update ~ updateUserStoryRoomDto', updateUserStoryRoomDto);
     const usr = await this.usrsRepository.findOneBy({ userId, storyId, roomId });
     usr.isOnline = isOnline || usr.isOnline;
     usr.storyPoint = storyPoint === undefined ? usr.storyPoint : storyPoint;

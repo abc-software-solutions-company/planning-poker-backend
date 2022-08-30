@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Patch } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Patch, ParseIntPipe } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateUserStoryRoomDto, UpdateUserStoryRoomDto } from './user-story-room.dto';
 import { UserStoryRoom } from './user-story-room.entity';
@@ -19,14 +19,14 @@ export class UserStoryRoomsController {
     return this.usrService.update(updateUserStoryRoomDto);
   }
 
-  @Get()
-  findAll(): Promise<UserStoryRoom[]> {
-    return this.usrService.findAll();
+  @Get('all/:roomId')
+  findAllbyRoom(@Param('roomId') roomId: number): Promise<UserStoryRoom[]> {
+    return this.usrService.findAllbyRoom(roomId);
   }
 
-  @Get(':userId/:storyId/:roomId')
-  findOne(@Param('userId') userId: string, @Param('storyId') storyId: string, @Param('roomId') roomId: number): Promise<UserStoryRoom> {
-    return this.usrService.findOne(userId, storyId, roomId);
+  @Get(':roomId')
+  findFullOne(@Param('roomId') roomId: number): Promise<UserStoryRoom> {
+    return this.usrService.findFullOne(roomId);
   }
 
   @Delete(':userId/:storyId/:roomId')

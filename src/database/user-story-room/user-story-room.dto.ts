@@ -17,13 +17,13 @@ export class CreateUserStoryRoomDto {
   @MaxLength(64)
   @IsNumber()
   roomId: number;
-
-  @ApiProperty({ example: true })
-  @IsBoolean()
-  isOnline: boolean;
 }
 
 export class UpdateUserStoryRoomDto extends CreateUserStoryRoomDto {
+  @ApiProperty({ example: true })
+  @IsBoolean()
+  isOnline: boolean;
+
   @ApiProperty({ example: 'Fibonacci number [1-21]' })
   @Min(1)
   @Max(21)

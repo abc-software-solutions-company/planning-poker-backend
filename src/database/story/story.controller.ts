@@ -13,10 +13,17 @@ export class StoriesController {
   create(@Body() createStoryDto: CreateStoryDto): Promise<Story> {
     return this.storiesService.create(createStoryDto);
   }
+
   @Patch()
   update(@Body() updateStoryDto: UpdateStoryDto): Promise<Story> {
     return this.storiesService.update(updateStoryDto);
   }
+
+  @Get('/finish/:id')
+  finish(@Param('id') id: string): Promise<Story> {
+    return this.storiesService.finish(id);
+  }
+
   @Get()
   findAll(): Promise<Story[]> {
     return this.storiesService.findAll();

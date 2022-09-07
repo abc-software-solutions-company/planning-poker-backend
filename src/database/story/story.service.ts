@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { UserStoryRoom } from '../user-story-room/user-story-room.entity';
-import { UserStoryRoomsService } from '../user-story-room/user-story-room.service';
-import { CreateStoryDto, UpdateStoryDto } from './story.dto';
+import { IsNull, Repository } from 'typeorm';
+import { CompleteStoryDto, CreateStoryDto, UpdateStoryDto } from './story.dto';
 import { Story } from './story.entity';
 
 @Injectable()
@@ -13,10 +11,16 @@ export class StoriesService {
     private readonly storiesRepository: Repository<Story>,
   ) {}
 
-  create(createStoryDto: CreateStoryDto): Promise<Story> {
+  async create(createStoryDto: CreateStoryDto): Promise<Story | number> {
+    const { name, roomId } = createStoryDto;
+    const roomStories = await this.storiesRepository.find({ where: { roomId, avgPoint: IsNull() } });
+    if (roomStories.length > 0) {
+      return 405;
+    }
     const story = new Story();
-    story.name = createStoryDto.name;
-
+    story.name = name;
+    story.roomId = roomId;
+    story.avgPoint = null;
     return this.storiesRepository.save(story);
   }
 
@@ -28,26 +32,27 @@ export class StoriesService {
     return this.storiesRepository.save(story);
   }
 
-  async finish(id: string): Promise<Story> {
+  async complete(completeStoryDto: CompleteStoryDto): Promise<Story> {
     const story = await this.storiesRepository
       .createQueryBuilder('story')
-      .leftJoinAndSelect('story.usrs', 'usrs')
-      .where('story.id=:id', { id })
-      .orderBy('story.createdAt', 'DESC')
+      .leftJoinAndSelect('story.results', 'results')
+      .where('story.id=:id', { id: completeStoryDto.id })
       .getOne();
-    story.avgPoint = story.usrs.reduce((previousValue, currentValue) => previousValue + currentValue.storyPoint, 0);
+    const lenVoted = story.results.filter((result) => result.votePoint !== null).length;
+    if (lenVoted == 0) throw new Error('No user has voted yet');
+    story.avgPoint = story.results.reduce((previousValue, currentValue) => previousValue + currentValue.votePoint, 0) / story.results.length;
     return this.storiesRepository.save(story);
   }
 
-  async findAll(): Promise<Story[]> {
-    return this.storiesRepository.find();
-  }
+  // async findAll(): Promise<Story[]> {
+  //   return this.storiesRepository.find();
+  // }
 
-  findOne(id: string): Promise<Story> {
-    return this.storiesRepository.findOneBy({ id: id });
-  }
+  // findOne(id: string): Promise<Story> {
+  //   return this.storiesRepository.findOneBy({ id: id });
+  // }
 
-  async remove(id: string): Promise<void> {
-    await this.storiesRepository.delete(id);
-  }
+  // async remove(id: string): Promise<void> {
+  //   await this.storiesRepository.delete(id);
+  // }
 }

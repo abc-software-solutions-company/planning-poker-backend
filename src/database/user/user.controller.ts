@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Patch } from '@nestjs/common';
+import { Body, Controller, Post, Patch, Get, Param } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { User } from './user.entity';
@@ -19,18 +19,18 @@ export class UsersController {
     return this.usersService.update(updateUserDto);
   }
 
-  @Get()
-  findAll(): Promise<User[]> {
-    return this.usersService.findAll();
-  }
-
   @Get(':id')
   findOne(@Param('id') id: string): Promise<User> {
     return this.usersService.findOne(id);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string): Promise<void> {
-    return this.usersService.remove(id);
-  }
+  // @Get()
+  // findAll(): Promise<User[]> {
+  //   return this.usersService.findAll();
+  // }
+
+  // @Delete(':id')
+  // remove(@Param('id') id: string): Promise<void> {
+  //   return this.usersService.remove(id);
+  // }
 }

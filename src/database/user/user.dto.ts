@@ -1,15 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { MaxLength, MinLength } from 'class-validator';
+import { IsNotEmpty, MaxLength } from 'class-validator';
 
 export class CreateUserDto {
-  @ApiProperty({ example: 'string' })
-  @MinLength(1)
+  @ApiProperty({ example: 'string(32)' })
+  @IsNotEmpty()
   @MaxLength(32)
   name: string;
 }
 export class UpdateUserDto extends CreateUserDto {
-  @ApiProperty({ example: 'id' })
-  @MinLength(16)
+  @ApiProperty({ example: 'uuid(64)' })
+  @IsNotEmpty()
   @MaxLength(64)
   id: string;
 }

@@ -1,6 +1,7 @@
 import { Room } from 'src/database/room/room.entity';
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import { UserStoryRoom } from '../user-story-room/user-story-room.entity';
+import { Act } from '../act/act.entity';
+import { Result } from '../result/result.entity';
 
 @Entity()
 export class User {
@@ -26,6 +27,9 @@ export class User {
   @OneToMany(() => Room, (room) => room.user)
   room: Room[];
 
-  @OneToMany(() => UserStoryRoom, (usr) => usr.user)
-  usrs: UserStoryRoom[];
+  @OneToMany(() => Act, (act) => act.user)
+  acts: Act[];
+
+  @OneToMany(() => Result, (act) => act.user)
+  results: Result[];
 }

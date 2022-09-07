@@ -9,9 +9,11 @@ import { RoomsModule } from './database/room/room.module';
 import { LoggerMiddleware } from './utils/logger.middleware';
 import { UsersModule } from './database/user/user.module';
 import { StoriesModule } from './database/story/story.module';
-import { UserStoryRoomsModule } from './database/user-story-room/user-story-room.module';
 import { APP_FILTER } from '@nestjs/core';
 import { AllExceptionsFilter } from './utils/all-exception.filter';
+import { ActsModule } from './database/act/act.module';
+import { ResultsModule } from './database/result/result.module';
+import { EventsModule } from './socket/events.module';
 
 @Module({
   imports: [
@@ -30,7 +32,9 @@ import { AllExceptionsFilter } from './utils/all-exception.filter';
     UsersModule,
     StoriesModule,
     RoomsModule,
-    UserStoryRoomsModule,
+    ResultsModule,
+    ActsModule,
+    EventsModule,
   ],
   providers: [
     {

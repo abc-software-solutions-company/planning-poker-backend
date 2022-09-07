@@ -1,5 +1,6 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import { UserStoryRoom } from '../user-story-room/user-story-room.entity';
+import { Story } from '../story/story.entity';
+import { Act } from '../act/act.entity';
 import { User } from '../user/user.entity';
 
 @Entity()
@@ -30,6 +31,9 @@ export class Room {
   @JoinColumn({ name: 'hostUserId' })
   user: User;
 
-  @OneToMany(() => UserStoryRoom, (usr) => usr.room)
-  usrs: UserStoryRoom[];
+  @OneToMany(() => Act, (act) => act.room)
+  acts: Act[];
+
+  @OneToMany(() => Story, (story) => story.room)
+  stories: Story[];
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Patch } from '@nestjs/common';
+import { Body, Controller, Post, Patch, Get, Param } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateRoomDto, UpdateRoomDto } from './room.dto';
 import { Room } from './room.entity';
@@ -13,6 +13,7 @@ export class RoomsController {
   create(@Body() createRoomDto: CreateRoomDto): Promise<Room> {
     return this.roomsService.create(createRoomDto);
   }
+
   @Patch()
   update(@Body() updateRoomDto: UpdateRoomDto): Promise<Room> {
     return this.roomsService.update(updateRoomDto);
@@ -24,12 +25,12 @@ export class RoomsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<Room> {
-    return this.roomsService.findOne(id);
+  findFullOne(@Param('id') id: number): Promise<Room> {
+    return this.roomsService.findFullOne(id);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: number): Promise<void> {
-    return this.roomsService.remove(id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: number): Promise<void> {
+  //   return this.roomsService.remove(id);
+  // }
 }

@@ -30,8 +30,23 @@ export class RoomsService {
   async findAll(): Promise<Room[]> {
     return this.roomsRepository.find();
   }
+
   findOne(id: number): Promise<Room> {
     return this.roomsRepository.findOneBy({ id: id });
+  }
+
+  findFullOne(id: number): Promise<Room> {
+    const room = this.roomsRepository
+      .createQueryBuilder('room')
+      .leftJoinAndSelect('room.acts', 'acts')
+      .leftJoinAndSelect('room.stories', 'stories')
+      .leftJoinAndSelect('stories.results', 'results')
+      .leftJoinAndSelect('acts.user', 'user')
+      .leftJoinAndSelect('user.results', 'results2')
+      .where('room.id=:id', { id })
+      // .orderBy('room.createdAt', 'DESC')
+      .getOne();
+    return room;
   }
 
   async remove(id: number): Promise<void> {

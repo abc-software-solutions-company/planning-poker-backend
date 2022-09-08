@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Patch, Res } from '@nestjs/common';
+import { Body, Controller, Post, Patch, Res, HttpStatus } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { CompleteStoryDto, CreateStoryDto, UpdateStoryDto } from './story.dto';
@@ -12,15 +12,13 @@ export class StoriesController {
 
   @Post()
   async create(@Body() createStoryDto: CreateStoryDto, @Res({ passthrough: true }) res: Response) {
-    const s = await this.storiesService.create(createStoryDto);
-    if (s === 405) {
-      return res.status(405).json({
-        statusCode: 405,
-        message: 'Bad Request',
+    const story = await this.storiesService.create(createStoryDto);
+    if (story === 405) {
+      return res.status(HttpStatus.METHOD_NOT_ALLOWED).json({
+        message: 'Err',
         timestamp: new Date().toISOString(),
       });
-    }
-    return this.storiesService.create(createStoryDto);
+    } else return story;
   }
 
   @Patch()

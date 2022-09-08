@@ -9,7 +9,6 @@
       const socket = io('http://localhost:3334');
       socket.on('connect', function () {
         console.log('Connected');
-
         socket.emit('update');
       });
       socket.on('update', function () {

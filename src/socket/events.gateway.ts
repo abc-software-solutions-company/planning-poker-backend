@@ -1,7 +1,7 @@
-import { SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 
-@WebSocketGateway( {
+@WebSocketGateway({
   cors: {
     origin: '*',
   },
@@ -13,5 +13,10 @@ export class EventsGateway {
   @SubscribeMessage('update')
   handleEvent() {
     this.server.emit('update');
+  }
+  @SubscribeMessage('identity')
+  identity(@MessageBody() data: any) {
+    console.log('🚀 ~ file: events.gateway.ts ~ line 19 ~ EventsGateway ~ identity ~ data', data);
+    return data;
   }
 }

@@ -1,22 +1,22 @@
-import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
-import { Server } from 'socket.io';
+import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer, OnGatewayConnection} from '@nestjs/websockets';
+import { Server, Socket } from 'socket.io';
 
-@WebSocketGateway({
-  cors: {
-    origin: '*',
-  },
-})
-export class EventsGateway {
+@WebSocketGateway({cors: {origin: '*'}})
+export class EventsGateway implements OnGatewayConnection {
   @WebSocketServer()
   server: Server;
-
-  @SubscribeMessage('update')
-  handleEvent() {
-    this.server.emit('update');
+  handleConnection(socket:Socket){
+    // console.log(socket);
+    // socket.join(socket.handshake.headers.room)
   }
-  @SubscribeMessage('identity')
-  identity(@MessageBody() data: any) {
-    console.log('🚀 ~ file: events.gateway.ts ~ line 19 ~ EventsGateway ~ identity ~ data', data);
-    return data;
+  @SubscribeMessage('room')
+  room(@MessageBody() data: any, @ConnectedSocket() socket:Socket ) {
+    console.log("🚀 ~ file: events.gateway.ts ~ line 14 ~ EventsGateway ~ room ~ data", data)
+    socket.join(String(data.roomId))
+  }
+  @SubscribeMessage('update')
+  update(@MessageBody() data: any, @ConnectedSocket() socket:Socket ) {
+    console.log("🚀 ~ file: events.gateway.ts ~ line 18 ~ EventsGateway ~ update ~ data", data)
+    this.server.to(String(data.roomId)).emit('update');
   }
 }

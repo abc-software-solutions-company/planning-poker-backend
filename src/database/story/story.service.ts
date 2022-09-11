@@ -14,7 +14,6 @@ export class StoriesService {
   async create(createStoryDto: CreateStoryDto): Promise<Story | number> {
     const { name, roomId } = createStoryDto;
     const roomStories = await this.storiesRepository.find({ where: { roomId, avgPoint: IsNull() } });
-    console.log('🚀 ~ file: story.service.ts ~ line 17 ~ StoriesService ~ create ~ roomStories', roomStories);
     if (roomStories.length > 0) {
       return 405;
     }

@@ -1,5 +1,7 @@
 # plan-pocker-cms
 
+node v14
+
 ## first run
 
 ```bash

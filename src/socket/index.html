@@ -6,9 +6,14 @@
       crossorigin="anonymous"
     ></script>
     <script>
-      const socket = io('http://localhost:3334');
+      const socket = io('http://localhost:3333', {
+        extraHeaders: {
+          room: '1234',
+        },
+      });
+      console.log('🚀 ~ file: index.html ~ line 10 ~ socket', socket);
       socket.on('connect', function () {
-        console.log('Connected');
+        console.log('connect');
         socket.emit('update');
       });
       socket.on('update', function () {

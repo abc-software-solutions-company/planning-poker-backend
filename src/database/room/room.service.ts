@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { CreateRoomDto, UpdateRoomDto } from './room.dto';
 import { Room } from './room.entity';
 
@@ -11,9 +11,42 @@ export class RoomsService {
     private readonly roomsRepository: Repository<Room>,
   ) {}
 
-  create(createRoomDto: CreateRoomDto): Promise<Room> {
+  generateId() {
+    const pool = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    let id = '';
+    for (let index = 0; index < 5; index++) {
+      const r = Math.floor(Math.random() * pool.length);
+      id = id + pool[r];
+    }
+    return id;
+  }
+
+  async generateRoom(number) {
+    const rooms = [];
+    let i = 0;
+    while (i < number) {
+      const room = new Room();
+      room.id = this.generateId();
+      room.name = 'name';
+      room.hostUserId = null;
+      const save = await this.roomsRepository.save(room);
+      if (save) {
+        i = i + 1;
+        rooms.push(save);
+      }
+    }
+    return rooms;
+  }
+
+  async create(createRoomDto: CreateRoomDto): Promise<Room> {
     const { name, hostUserId } = createRoomDto;
-    const room = new Room();
+    let room = await this.roomsRepository.findOneBy({ hostUserId: IsNull() });
+    if (!room) {
+      await this.generateRoom(10);
+      room = await this.roomsRepository.findOneBy({ hostUserId: IsNull() });
+    }
+    console.log('🚀 ~ file: room.service.ts ~ line 47 ~ RoomsService ~ create ~ room', room);
+
     room.name = name;
     room.hostUserId = hostUserId;
     return this.roomsRepository.save(room);
@@ -31,11 +64,11 @@ export class RoomsService {
     return this.roomsRepository.find();
   }
 
-  findOne(id: number): Promise<Room> {
+  findOne(id: string): Promise<Room> {
     return this.roomsRepository.findOneBy({ id: id });
   }
 
-  findFullOne(id: number): Promise<Room> {
+  findFullOne(id: string): Promise<Room> {
     const room = this.roomsRepository
       .createQueryBuilder('room')
       .leftJoinAndSelect('room.acts', 'acts')

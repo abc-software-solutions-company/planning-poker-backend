@@ -16,9 +16,9 @@ export class CreateRoomDto {
 }
 
 export class UpdateRoomDto extends CreateRoomDto {
-  @ApiProperty({ example: 'number(64)' })
+  @ApiProperty({ example: 'string(6)' })
   @IsNotEmpty()
   @MaxLength(64)
   @IsNumber()
-  id: number;
+  id: string;
 }

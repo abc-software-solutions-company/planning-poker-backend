@@ -1,18 +1,18 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 import { Story } from '../story/story.entity';
 import { Act } from '../act/act.entity';
 import { User } from '../user/user.entity';
 
 @Entity()
 export class Room {
-  @PrimaryGeneratedColumn({ type: 'bigint' })
-  id: number;
+  @PrimaryColumn({ type: 'varchar', length: 6 })
+  id: string;
 
   @Column({ type: 'varchar', length: 256 })
   name: string;
 
-  @Column()
-  hostUserId: string;
+  @Column({ nullable: true })
+  hostUserId: string | null;
 
   @CreateDateColumn({
     type: 'timestamp',

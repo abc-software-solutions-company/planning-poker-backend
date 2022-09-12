@@ -14,6 +14,11 @@ export class RoomsController {
     return this.roomsService.create(createRoomDto);
   }
 
+  @Post('generateRoom')
+  generateRoom() {
+    return this.roomsService.generateRoom(10);
+  }
+
   @Patch()
   update(@Body() updateRoomDto: UpdateRoomDto): Promise<Room> {
     return this.roomsService.update(updateRoomDto);
@@ -25,7 +30,7 @@ export class RoomsController {
   }
 
   @Get(':id')
-  findFullOne(@Param('id') id: number): Promise<Room> {
+  findFullOne(@Param('id') id: string): Promise<Room> {
     return this.roomsService.findFullOne(id);
   }
 

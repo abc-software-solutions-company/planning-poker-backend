@@ -13,9 +13,9 @@ export class CreateStoryDto {
   @MaxLength(256)
   name: string;
 
-  @ApiProperty({ example: 'bigint' })
+  @ApiProperty({ example: 'string(6)' })
   @IsNotEmpty()
-  roomId: number;
+  roomId: string;
 }
 
 export class UpdateStoryDto extends CreateStoryDto {

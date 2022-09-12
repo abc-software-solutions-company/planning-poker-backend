@@ -1,9 +1,9 @@
 import { Body, Controller, Post, Patch, Res, HttpStatus } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
-import { CompleteStoryDto, CreateStoryDto, UpdateStoryDto } from './story.dto';
-import { Story } from './story.entity';
-import { StoriesService } from './story.service';
+import { CompleteStoryDto, CreateStoryDto, UpdateStoryDto } from './index.dto';
+import { Story } from './index.entity';
+import { StoriesService } from './index.service';
 
 @ApiTags('Stories')
 @Controller('stories')

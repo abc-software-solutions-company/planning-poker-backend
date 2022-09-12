@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Repository } from 'typeorm';
-import { CompleteStoryDto, CreateStoryDto, UpdateStoryDto } from './story.dto';
-import { Story } from './story.entity';
+import { CompleteStoryDto, CreateStoryDto, UpdateStoryDto } from './index.dto';
+import { Story } from './index.entity';
 
 @Injectable()
 export class StoriesService {
@@ -35,12 +35,12 @@ export class StoriesService {
   async complete(completeStoryDto: CompleteStoryDto): Promise<Story> {
     const story = await this.storiesRepository
       .createQueryBuilder('story')
-      .leftJoinAndSelect('story.results', 'results')
+      .leftJoinAndSelect('story.userStories', 'userStories')
       .where('story.id=:id', { id: completeStoryDto.id })
       .getOne();
-    const lenVoted = story.results.filter((result) => result.votePoint !== null).length;
+    const lenVoted = story.userStories.filter((userStory) => userStory.votePoint !== null).length;
     if (lenVoted == 0) throw new Error('No user has voted yet');
-    story.avgPoint = story.results.reduce((previousValue, currentValue) => previousValue + currentValue.votePoint, 0) / story.results.length;
+    story.avgPoint = story.userStories.reduce((previousValue, currentValue) => previousValue + currentValue.votePoint, 0) / story.userStories.length;
     return this.storiesRepository.save(story);
   }
 

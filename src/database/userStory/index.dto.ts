@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, Max, MaxLength, Min } from 'class-validator';
 
-export class CreateResultDto {
+export class CreateUserStoryDto {
   @ApiProperty({ example: 'uuid(64)' })
   @IsNotEmpty()
   @MaxLength(64)
@@ -18,4 +18,4 @@ export class CreateResultDto {
   @IsNumber()
   votePoint: number;
 }
-export class UpdateResultDto extends CreateResultDto {}
+export class UpdateUserStoryDto extends CreateUserStoryDto {}

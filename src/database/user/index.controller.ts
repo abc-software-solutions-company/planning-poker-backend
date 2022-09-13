@@ -1,5 +1,6 @@
-import { Body, Controller, Post, Patch, Get, Param } from '@nestjs/common';
+import { Body, Controller, Post, Patch, Get, Param, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Response } from 'express';
 import { CreateUserDto, UpdateUserDto } from './index.dto';
 import { User } from './index.entity';
 import { UsersService } from './index.service';
@@ -20,8 +21,14 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<User> {
-    return this.usersService.findOne(id);
+  async findOne(@Param('id') id: string, @Res({ passthrough: true }) res: Response) {
+    try {
+      const user = await this.usersService.findOne(id);
+      if (user) return user;
+      return res.sendStatus(401);
+    } catch {
+      return res.sendStatus(401);
+    }
   }
 
   @Get()

@@ -14,7 +14,8 @@ import { SocketsModule } from './socket/index.module';
 import { UserRoomsModule } from './database/userRoom/index.module';
 import { UserStoriesModule } from './database/userStory/index.module';
 import { PoolsModule } from './database/pool/index.module';
-import { Middleware } from './utils/logger.middleware';
+import { LoggerMiddleware } from './utils/logger.middleware';
+import { AuthenticationMiddleware } from './utils/authentication.middleware';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { Middleware } from './utils/logger.middleware';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(Middleware).forRoutes('*');
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+    consumer.apply(AuthenticationMiddleware).forRoutes('userStories', 'userRooms');
   }
 }

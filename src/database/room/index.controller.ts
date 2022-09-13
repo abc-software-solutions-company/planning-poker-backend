@@ -1,8 +1,8 @@
 import { Body, Controller, Post, Patch, Get, Param } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CreateRoomDto, UpdateRoomDto } from './room.dto';
-import { Room } from './room.entity';
-import { RoomsService } from './room.service';
+import { CreateRoomDto, UpdateRoomDto } from './index.dto';
+import { Room } from './index.entity';
+import { RoomsService } from './index.service';
 
 @ApiTags('Rooms')
 @Controller('rooms')
@@ -12,11 +12,6 @@ export class RoomsController {
   @Post()
   create(@Body() createRoomDto: CreateRoomDto): Promise<Room> {
     return this.roomsService.create(createRoomDto);
-  }
-
-  @Post('generateRoom')
-  generateRoom() {
-    return this.roomsService.generateRoom(10);
   }
 
   @Patch()

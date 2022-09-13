@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import { Room } from '../room/room.entity';
-import { Result } from '../result/result.entity';
+import { Room } from '../room/index.entity';
+import { UserStory } from '../userStory/index.entity';
 
 @Entity()
 export class Story {
@@ -10,8 +10,8 @@ export class Story {
   @Column({ type: 'varchar', length: 256 })
   name: string;
 
-  @Column({ type: 'bigint' })
-  roomId: number;
+  @Column()
+  roomId: string;
 
   @Column({ type: 'double precision', nullable: true })
   avgPoint: number;
@@ -29,8 +29,8 @@ export class Story {
   })
   updatedAt: Date;
 
-  @OneToMany(() => Result, (result) => result.story)
-  results: Result[];
+  @OneToMany(() => UserStory, (userStory) => userStory.story)
+  userStories: UserStory[];
 
   @ManyToOne(() => Room, (room) => room.stories)
   @JoinColumn({ name: 'roomId' })

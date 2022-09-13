@@ -1,9 +1,9 @@
-import { Body, Controller, Post, Patch, Res, HttpStatus } from '@nestjs/common';
+import { Body, Controller, Post, Patch, Res, HttpStatus, Param, Get } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
-import { CompleteStoryDto, CreateStoryDto, UpdateStoryDto } from './story.dto';
-import { Story } from './story.entity';
-import { StoriesService } from './story.service';
+import { CompleteStoryDto, CreateStoryDto, UpdateStoryDto } from './index.dto';
+import { Story } from './index.entity';
+import { StoriesService } from './index.service';
 
 @ApiTags('Stories')
 @Controller('stories')
@@ -31,15 +31,15 @@ export class StoriesController {
     return this.storiesService.complete(completeStoryDto);
   }
 
-  // @Get()
-  // findAll(): Promise<Story[]> {
-  //   return this.storiesService.findAll();
-  // }
+  @Get()
+  findAll(): Promise<Story[]> {
+    return this.storiesService.findAll();
+  }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string): Promise<Story> {
-  //   return this.storiesService.findOne(id);
-  // }
+  @Get(':id')
+  findOne(@Param('id') id: string): Promise<Story> {
+    return this.storiesService.findOne(id);
+  }
 
   // @Delete(':id')
   // remove(@Param('id') id: string): Promise<void> {

@@ -1,7 +1,7 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn, UpdateDateColumn } from 'typeorm';
-import { Story } from '../story/story.entity';
-import { Act } from '../act/act.entity';
-import { User } from '../user/user.entity';
+import { Story } from '../story/index.entity';
+import { UserRoom } from '../userRoom/index.entity';
+import { User } from '../user/index.entity';
 
 @Entity()
 export class Room {
@@ -11,8 +11,8 @@ export class Room {
   @Column({ type: 'varchar', length: 256 })
   name: string;
 
-  @Column({ nullable: true })
-  hostUserId: string | null;
+  @Column()
+  hostUserId: string;
 
   @CreateDateColumn({
     type: 'timestamp',
@@ -27,12 +27,12 @@ export class Room {
   })
   updatedAt: Date;
 
-  @ManyToOne(() => User, (user) => user.room)
+  @ManyToOne(() => User, (user) => user.rooms)
   @JoinColumn({ name: 'hostUserId' })
   user: User;
 
-  @OneToMany(() => Act, (act) => act.room)
-  acts: Act[];
+  @OneToMany(() => UserRoom, (userRoom) => userRoom.room)
+  userRooms: UserRoom[];
 
   @OneToMany(() => Story, (story) => story.room)
   stories: Story[];

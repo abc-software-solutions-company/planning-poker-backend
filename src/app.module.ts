@@ -5,15 +5,16 @@ import { DataSource } from 'typeorm';
 import appConfig from './config/app.config';
 import databaseConfig from './config/database.config';
 import { TypeOrmConfigService } from './database/typeorm-config.service';
-import { RoomsModule } from './database/room/room.module';
+import { RoomsModule } from './database/room/index.module';
 import { LoggerMiddleware } from './utils/logger.middleware';
-import { UsersModule } from './database/user/user.module';
-import { StoriesModule } from './database/story/story.module';
+import { UsersModule } from './database/user/index.module';
+import { StoriesModule } from './database/story/index.module';
 import { APP_FILTER } from '@nestjs/core';
 import { AllExceptionsFilter } from './utils/all-exception.filter';
-import { ActsModule } from './database/act/act.module';
-import { ResultsModule } from './database/result/result.module';
-import { EventsModule } from './socket/events.module';
+import { SocketsModule } from './socket/index.module';
+import { UserRoomsModule } from './database/userRoom/index.module';
+import { UserStoriesModule } from './database/userStory/index.module';
+import { PoolsModule } from './database/pool/index.module';
 
 @Module({
   imports: [
@@ -32,9 +33,10 @@ import { EventsModule } from './socket/events.module';
     UsersModule,
     StoriesModule,
     RoomsModule,
-    ResultsModule,
-    ActsModule,
-    EventsModule,
+    UserRoomsModule,
+    UserStoriesModule,
+    PoolsModule,
+    SocketsModule,
   ],
   providers: [
     {

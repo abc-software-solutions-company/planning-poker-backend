@@ -40,12 +40,18 @@ export class PoolsService {
     return this.poolsRepository.findOneBy({ isUsed: false });
   }
 
+  async use(id: string) {
+    const pool = await this.poolsRepository.findOneBy({ id });
+    pool.isUsed = true;
+    return this.poolsRepository.save(pool);
+  }
+
   async findAll(): Promise<Pool[]> {
     return this.poolsRepository.find();
   }
 
   findOne(id: string): Promise<Pool> {
-    return this.poolsRepository.findOneBy({ id: id });
+    return this.poolsRepository.findOneBy({ id });
   }
 
   async remove(id: string): Promise<void> {

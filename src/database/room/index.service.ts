@@ -22,6 +22,7 @@ export class RoomsService {
     room.hostUserId = hostUserId;
     const save = await this.roomsRepository.save(room);
     if (!save) throw new Error('Create failure room');
+    this.poolsService.use(pool.id);
     return save;
   }
 

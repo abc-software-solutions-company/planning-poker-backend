@@ -53,20 +53,8 @@ export class RoomsService {
       .getOne();
     return room;
   }
-  // findFullOne(id: string): Promise<Room> {
-  //   const room = this.roomsRepository
-  //     .createQueryBuilder('room')
-  //     .leftJoinAndSelect('room.userRooms', 'userRooms')
-  //     .leftJoinAndSelect('room.stories', 'stories')
-  //     .leftJoinAndSelect('stories.userStories', 'userStories')
-  //     .leftJoinAndSelect('userRooms.user', 'user')
-  //     .leftJoinAndSelect('user.userStories', 'userStories2')
-  //     .where('room.id=:id', { id })
-  //     .getOne();
-  //   return room;
-  // }
 
-  // async remove(id: string): Promise<void> {
-  //   await this.roomsRepository.delete(id);
-  // }
+  async remove(id: string): Promise<void> {
+    await this.roomsRepository.delete(id);
+  }
 }

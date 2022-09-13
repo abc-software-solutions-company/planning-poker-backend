@@ -26,9 +26,11 @@ export class UserStoriesService {
     userStory.votePoint = votePoint;
     return this.userStoriesRepository.save(userStory);
   }
+
   findOne(userId: string, storyId: string): Promise<UserStory> {
     return this.userStoriesRepository.findOneBy({ userId, storyId });
   }
+
   findFullByStory(storyId: string): Promise<UserStory[]> {
     return this.userStoriesRepository.findBy({ storyId });
   }

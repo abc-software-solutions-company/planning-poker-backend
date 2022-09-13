@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from '../user/index.entity';
 import { CreateUserRoomDto, UpdateUserRoomDto } from './index.dto';
 import { UserRoom } from './index.entity';
 
@@ -30,22 +29,6 @@ export class UserRoomsService {
 
   async findAll(): Promise<UserRoom[]> {
     return this.userRoomsRepository.find();
-  }
-  findAllbyRoom(roomId: string): Promise<UserRoom[]> {
-    return this.userRoomsRepository.find({ where: { roomId }, relations: { user: true } });
-  }
-
-  findFullOne(roomId: string): Promise<UserRoom> {
-    return (
-      this.userRoomsRepository
-        // .findOne({ where: { roomId }, relations: { user: true } });
-        .createQueryBuilder('userRoom')
-        .leftJoinAndSelect('userRoom.user', 'userRoom.user', 'user')
-        // .leftJoinAndSelect('userRoom.room', 'room')
-        // .leftJoinAndSelect('room.userRooms', 'userRooms')
-        .where('userRoom.roomId=:roomId', { roomId })
-        .getOne()
-    );
   }
 
   findOne(userId: string, roomId: string): Promise<UserRoom> {

@@ -24,10 +24,10 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
-  // @Get()
-  // findAll(): Promise<User[]> {
-  //   return this.usersService.findAll();
-  // }
+  @Get()
+  findAll(): Promise<User[]> {
+    return this.usersService.findAll();
+  }
 
   // @Delete(':id')
   // remove(@Param('id') id: string): Promise<void> {

@@ -14,14 +14,14 @@ export class PoolsController {
     return this.poolsService.generate(num);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string): Promise<Pool> {
-    return this.poolsService.findOne(id);
-  }
-
   @Get()
   findAll(): Promise<Pool[]> {
     return this.poolsService.findAll();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string): Promise<Pool> {
+    return this.poolsService.findOne(id);
   }
 
   // @Delete(':id')

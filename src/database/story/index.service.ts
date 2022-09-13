@@ -44,15 +44,15 @@ export class StoriesService {
     return this.storiesRepository.save(story);
   }
 
-  // async findAll(): Promise<Story[]> {
-  //   return this.storiesRepository.find();
-  // }
+  async findAll(): Promise<Story[]> {
+    return this.storiesRepository.find();
+  }
 
-  // findOne(id: string): Promise<Story> {
-  //   return this.storiesRepository.findOneBy({ id: id });
-  // }
+  findOne(id: string): Promise<Story> {
+    return this.storiesRepository.findOneBy({ id: id });
+  }
 
-  // async remove(id: string): Promise<void> {
-  //   await this.storiesRepository.delete(id);
-  // }
+  async remove(id: string): Promise<void> {
+    await this.storiesRepository.delete(id);
+  }
 }

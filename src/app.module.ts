@@ -6,7 +6,6 @@ import appConfig from './config/app.config';
 import databaseConfig from './config/database.config';
 import { TypeOrmConfigService } from './database/typeorm-config.service';
 import { RoomsModule } from './database/room/index.module';
-import { LoggerMiddleware } from './utils/logger.middleware';
 import { UsersModule } from './database/user/index.module';
 import { StoriesModule } from './database/story/index.module';
 import { APP_FILTER } from '@nestjs/core';
@@ -15,6 +14,8 @@ import { SocketsModule } from './socket/index.module';
 import { UserRoomsModule } from './database/userRoom/index.module';
 import { UserStoriesModule } from './database/userStory/index.module';
 import { PoolsModule } from './database/pool/index.module';
+import { LoggerMiddleware } from './utils/logger.middleware';
+import { AuthenticationMiddleware } from './utils/authentication.middleware';
 
 @Module({
   imports: [
@@ -48,5 +49,6 @@ import { PoolsModule } from './database/pool/index.module';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(LoggerMiddleware).forRoutes('*');
+    consumer.apply(AuthenticationMiddleware).forRoutes('userStories', 'userRooms');
   }
 }

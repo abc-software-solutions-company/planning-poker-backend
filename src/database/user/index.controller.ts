@@ -25,7 +25,7 @@ export class UsersController {
     try {
       const user = await this.usersService.findOne(id);
       if (user) return user;
-      return res.sendStatus(401);
+      throw new Error('');
     } catch {
       return res.sendStatus(401);
     }

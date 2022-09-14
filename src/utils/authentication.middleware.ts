@@ -7,16 +7,30 @@ export class AuthenticationMiddleware implements NestMiddleware {
   constructor(private readonly usersService: UsersService) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
-    let user = undefined;
-    user = await this.usersService.findOne(req.headers.authorization);
-    console.log('🚀 ~ file: authentication.middleware.ts ~ line 12 ~ AuthenticationMiddleware ~ use ~ user', user);
-    if (user) next();
-    throw new HttpException(
-      {
-        status: HttpStatus.UNAUTHORIZED,
-        error: 'This is a custom message',
-      },
-      HttpStatus.UNAUTHORIZED,
-    );
+    console.log('AuthenticationMiddleware');
+
+    try {
+      let user = undefined;
+      user = await this.usersService.findOne(req.headers.authorization);
+      if (user) next();
+      else {
+        throw new HttpException(
+          {
+            status: HttpStatus.UNAUTHORIZED,
+            error: 'UNAUTHORIZED',
+          },
+          HttpStatus.UNAUTHORIZED,
+        );
+      }
+    } catch {
+      console.error('Err Auth');
+      throw new HttpException(
+        {
+          status: HttpStatus.UNAUTHORIZED,
+          error: 'UNAUTHORIZED',
+        },
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
   }
 }

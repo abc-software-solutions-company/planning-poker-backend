@@ -5,7 +5,7 @@ import { User } from '../user/index.entity';
 
 @Entity()
 export class Room {
-  @PrimaryColumn({ type: 'varchar', length: 6 })
+  @PrimaryColumn({ type: 'varchar', length: 5 })
   id: string;
 
   @Column({ type: 'varchar', length: 256 })

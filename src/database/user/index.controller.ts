@@ -1,43 +1,31 @@
-import { Body, Controller, Post, Patch, Get, Param, Res } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-import { Response } from 'express';
-import { CreateUserDto, UpdateUserDto } from './index.dto';
+import { Body, Controller, Patch, Get, UseGuards, Req } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { IRequest } from 'src/utils/type';
+import { UpdateUserDto } from './index.dto';
 import { User } from './index.entity';
 import { UsersService } from './index.service';
 
+@ApiBearerAuth()
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return this.usersService.create(createUserDto);
-  }
-
+  @UseGuards(JwtAuthGuard)
   @Patch()
-  update(@Body() updateUserDto: UpdateUserDto): Promise<User> {
-    return this.usersService.update(updateUserDto);
+  update(@Req() req: IRequest, @Body() body: UpdateUserDto): Promise<User> {
+    return this.usersService.update({ ...body, id: req.user.id });
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string, @Res({ passthrough: true }) res: Response) {
-    try {
-      const user = await this.usersService.findOne(id);
-      if (user) return user;
-      throw new Error('');
-    } catch {
-      return res.sendStatus(401);
-    }
+  @UseGuards(JwtAuthGuard)
+  @Get('infor')
+  infor(@Req() req: IRequest) {
+    return req.user;
   }
 
   @Get()
   findAll(): Promise<User[]> {
     return this.usersService.findAll();
   }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string): Promise<void> {
-  //   return this.usersService.remove(id);
-  // }
 }

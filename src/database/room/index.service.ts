@@ -1,9 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PoolsService } from '../pool/index.service';
-import { CreateRoomDto, UpdateRoomDto } from './index.dto';
 import { Room } from './index.entity';
+
+interface ICreate {
+  name: string;
+  hostUserId: string;
+}
+interface IUpdate {
+  id: string;
+  name?: string;
+  hostUserId?: string;
+}
 
 @Injectable()
 export class RoomsService {
@@ -13,8 +22,7 @@ export class RoomsService {
     private readonly poolsService: PoolsService,
   ) {}
 
-  async create(createRoomDto: CreateRoomDto) {
-    const { name, hostUserId } = createRoomDto;
+  async create({ name, hostUserId }: ICreate) {
     const pool = await this.poolsService.getOne();
     const room = new Room();
     room.id = pool.id;
@@ -26,9 +34,9 @@ export class RoomsService {
     return save;
   }
 
-  async update(updateRoomDto: UpdateRoomDto): Promise<Room> {
-    const { id, name, hostUserId } = updateRoomDto;
+  async update({ id, name, hostUserId }: IUpdate) {
     const room = await this.roomsRepository.findOneBy({ id });
+    if (room || room.id !== id) throw new BadRequestException('Room not exist');
     room.name = name || room.name;
     room.hostUserId = hostUserId || room.hostUserId;
     return this.roomsRepository.save(room);

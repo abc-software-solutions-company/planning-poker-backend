@@ -36,3 +36,4 @@ lerna-debug.log*
 
 # note
 /note.txt
+.env

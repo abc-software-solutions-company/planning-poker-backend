@@ -1,31 +1,29 @@
-import { Body, Controller, Post, Patch, Res, HttpStatus, Param, Get } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-import { Response } from 'express';
+import { Body, Controller, Post, Patch, Param, Get, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CompleteStoryDto, CreateStoryDto, UpdateStoryDto } from './index.dto';
 import { Story } from './index.entity';
 import { StoriesService } from './index.service';
 
+@ApiBearerAuth()
 @ApiTags('Stories')
 @Controller('stories')
 export class StoriesController {
   constructor(private readonly storiesService: StoriesService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  async create(@Body() createStoryDto: CreateStoryDto, @Res({ passthrough: true }) res: Response) {
-    const story = await this.storiesService.create(createStoryDto);
-    if (story === 405) {
-      return res.status(HttpStatus.METHOD_NOT_ALLOWED).json({
-        message: 'Err',
-        timestamp: new Date().toISOString(),
-      });
-    } else return story;
+  create(@Body() createStoryDto: CreateStoryDto) {
+    return this.storiesService.create(createStoryDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch()
   update(@Body() updateStoryDto: UpdateStoryDto): Promise<Story> {
     return this.storiesService.update(updateStoryDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch('complete')
   complete(@Body() completeStoryDto: CompleteStoryDto): Promise<Story> {
     return this.storiesService.complete(completeStoryDto);
@@ -40,9 +38,4 @@ export class StoriesController {
   findOne(@Param('id') id: string): Promise<Story> {
     return this.storiesService.findOne(id);
   }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string): Promise<void> {
-  //   return this.storiesService.remove(id);
-  // }
 }

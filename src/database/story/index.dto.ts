@@ -1,12 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, Max, MaxLength, Min } from 'class-validator';
 
-export class CompleteStoryDto {
-  @ApiProperty({ example: 'uuid(64)' })
-  @IsNotEmpty()
-  @MaxLength(64)
-  id: string;
-}
 export class CreateStoryDto {
   @ApiProperty({ example: 'string(256)' })
   @IsNotEmpty()
@@ -19,6 +13,13 @@ export class CreateStoryDto {
 }
 
 export class UpdateStoryDto extends CreateStoryDto {
+  @ApiProperty({ example: 'uuid(64)' })
+  @IsNotEmpty()
+  @MaxLength(64)
+  id: string;
+}
+
+export class CompleteStoryDto {
   @ApiProperty({ example: 'uuid(64)' })
   @IsNotEmpty()
   @MaxLength(64)

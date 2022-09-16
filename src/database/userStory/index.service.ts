@@ -1,9 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, MethodNotAllowedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserStoryDto, UpdateUserStoryDto } from './index.dto';
 import { UserStory } from './index.entity';
 
+const votePointArr = [0, 1, 2, 3, 5, 8, 13, 21];
+interface ICreate {
+  userId: string;
+  storyId: string;
+}
+
+interface IUpdate extends ICreate {
+  votePoint: number;
+}
 @Injectable()
 export class UserStoriesService {
   constructor(
@@ -11,17 +19,16 @@ export class UserStoriesService {
     private readonly userStoriesRepository: Repository<UserStory>,
   ) {}
 
-  create(createUserStory: CreateUserStoryDto): Promise<UserStory> {
-    const { userId, storyId, votePoint } = createUserStory;
+  create({ userId, storyId }: ICreate): Promise<UserStory> {
     const userStory = new UserStory();
     userStory.userId = userId;
     userStory.storyId = storyId;
-    userStory.votePoint = votePoint;
+    userStory.votePoint = null;
     return this.userStoriesRepository.save(userStory);
   }
 
-  async update(updateUserStory: UpdateUserStoryDto): Promise<UserStory> {
-    const { userId, storyId, votePoint } = updateUserStory;
+  async update({ userId, storyId, votePoint }: IUpdate): Promise<UserStory> {
+    if (!votePointArr.includes(votePoint)) throw new MethodNotAllowedException('This vote point does not allow');
     const userStory = await this.userStoriesRepository.findOneBy({ userId, storyId });
     userStory.votePoint = votePoint;
     return this.userStoriesRepository.save(userStory);

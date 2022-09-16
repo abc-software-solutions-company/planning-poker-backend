@@ -25,7 +25,7 @@ export class PoolsService {
     let i = 0;
     while (i < num) {
       const pool = new Pool();
-      pool.id = this.generateId(6);
+      pool.id = this.generateId(5);
       pool.isUsed = false;
       const save = await this.poolsRepository.save(pool);
       if (save) {

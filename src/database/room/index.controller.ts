@@ -1,22 +1,27 @@
-import { Body, Controller, Post, Patch, Get, Param } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Post, Patch, Get, Param, UseGuards, Req } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { IRequest } from 'src/utils/type';
 import { CreateRoomDto, UpdateRoomDto } from './index.dto';
 import { Room } from './index.entity';
 import { RoomsService } from './index.service';
 
+@ApiBearerAuth()
 @ApiTags('Rooms')
 @Controller('rooms')
 export class RoomsController {
   constructor(private readonly roomsService: RoomsService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createRoomDto: CreateRoomDto): Promise<Room> {
-    return this.roomsService.create(createRoomDto);
+  create(@Req() req: IRequest, @Body() body: CreateRoomDto): Promise<Room> {
+    return this.roomsService.create({ ...body, hostUserId: req.user.id });
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch()
-  update(@Body() updateRoomDto: UpdateRoomDto): Promise<Room> {
-    return this.roomsService.update(updateRoomDto);
+  update(@Body() body: UpdateRoomDto): Promise<Room> {
+    return this.roomsService.update(body);
   }
 
   @Get()
@@ -28,9 +33,4 @@ export class RoomsController {
   findFullOne(@Param('id') id: string): Promise<Room> {
     return this.roomsService.findFullOne(id);
   }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: number): Promise<void> {
-  //   return this.roomsService.remove(id);
-  // }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, MethodNotAllowedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Repository } from 'typeorm';
 import { CompleteStoryDto, CreateStoryDto, UpdateStoryDto } from './index.dto';
@@ -11,11 +11,11 @@ export class StoriesService {
     private readonly storiesRepository: Repository<Story>,
   ) {}
 
-  async create(createStoryDto: CreateStoryDto): Promise<Story | number> {
+  async create(createStoryDto: CreateStoryDto) {
     const { name, roomId } = createStoryDto;
     const roomStories = await this.storiesRepository.find({ where: { roomId, avgPoint: IsNull() } });
     if (roomStories.length > 0) {
-      return 405;
+      throw new MethodNotAllowedException();
     }
     const story = new Story();
     story.name = name;
@@ -25,10 +25,9 @@ export class StoriesService {
   }
 
   async update(updateStoryDto: UpdateStoryDto): Promise<Story> {
-    const { id, name, avgPoint } = updateStoryDto;
+    const { id, name } = updateStoryDto;
     const story = await this.storiesRepository.findOneBy({ id });
     story.name = name || story.name;
-    story.avgPoint = avgPoint === undefined ? story.avgPoint : avgPoint;
     return this.storiesRepository.save(story);
   }
 

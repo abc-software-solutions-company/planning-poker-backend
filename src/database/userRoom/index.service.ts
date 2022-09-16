@@ -1,9 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserRoomDto, UpdateUserRoomDto } from './index.dto';
 import { UserRoom } from './index.entity';
 
+interface ICreate {
+  userId: string;
+  roomId: string;
+}
+interface IUpdate extends ICreate {
+  isOnline: boolean;
+}
 @Injectable()
 export class UserRoomsService {
   constructor(
@@ -11,17 +17,15 @@ export class UserRoomsService {
     private readonly userRoomsRepository: Repository<UserRoom>,
   ) {}
 
-  create(createUserRoomDto: CreateUserRoomDto): Promise<UserRoom> {
+  create({ userId, roomId }: ICreate): Promise<UserRoom> {
     const userRoom = new UserRoom();
-    const { userId, roomId } = createUserRoomDto;
     userRoom.userId = userId;
     userRoom.roomId = roomId;
     userRoom.isOnline = true;
     return this.userRoomsRepository.save(userRoom);
   }
 
-  async update(updateUserRoomDto: UpdateUserRoomDto): Promise<UserRoom> {
-    const { userId, roomId, isOnline } = updateUserRoomDto;
+  async update({ userId, roomId, isOnline }: IUpdate): Promise<UserRoom> {
     const userRoom = await this.userRoomsRepository.findOneBy({ userId, roomId });
     userRoom.isOnline = isOnline || userRoom.isOnline;
     return this.userRoomsRepository.save(userRoom);

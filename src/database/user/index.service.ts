@@ -1,9 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserDto, UpdateUserDto } from './index.dto';
 import { User } from './index.entity';
 
+interface ICreate {
+  name: string;
+}
+interface IUpdate extends ICreate {
+  id: string;
+}
 @Injectable()
 export class UsersService {
   constructor(
@@ -11,14 +16,13 @@ export class UsersService {
     private readonly usersRepository: Repository<User>,
   ) {}
 
-  create(createUserDto: CreateUserDto): Promise<User> {
+  create({ name }: ICreate): Promise<User> {
     const user = new User();
-    user.name = createUserDto.name;
+    user.name = name;
     return this.usersRepository.save(user);
   }
 
-  async update(updateUserDto: UpdateUserDto): Promise<User> {
-    const { id, name } = updateUserDto;
+  async update({ id, name }: IUpdate): Promise<User> {
     const user = await this.usersRepository.findOneBy({ id });
     user.name = name || user.name;
     return this.usersRepository.save(user);

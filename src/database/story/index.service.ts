@@ -11,8 +11,7 @@ export class StoriesService {
     private readonly storiesRepository: Repository<Story>,
   ) {}
 
-  async create(createStoryDto: CreateStoryDto) {
-    const { name, roomId } = createStoryDto;
+  async create({ name, roomId }: CreateStoryDto) {
     const roomStories = await this.storiesRepository.find({ where: { roomId, avgPoint: IsNull() } });
     if (roomStories.length > 0) {
       throw new MethodNotAllowedException();
@@ -24,21 +23,16 @@ export class StoriesService {
     return this.storiesRepository.save(story);
   }
 
-  async update(updateStoryDto: UpdateStoryDto): Promise<Story> {
-    const { id, name } = updateStoryDto;
+  async update({ id, name }: UpdateStoryDto): Promise<Story> {
     const story = await this.storiesRepository.findOneBy({ id });
     story.name = name || story.name;
     return this.storiesRepository.save(story);
   }
 
-  async complete(completeStoryDto: CompleteStoryDto): Promise<Story> {
-    const story = await this.storiesRepository
-      .createQueryBuilder('story')
-      .leftJoinAndSelect('story.userStories', 'userStories')
-      .where('story.id=:id', { id: completeStoryDto.id })
-      .getOne();
-    const lenVoted = story.userStories.filter((userStory) => userStory.votePoint !== null).length;
-    if (lenVoted == 0) throw new Error('No user has voted yet');
+  async complete({ id }: CompleteStoryDto): Promise<Story> {
+    const story = await this.storiesRepository.findOne({ where: { id }, relations: { userStories: true } });
+    const numVotedUser = story.userStories.filter((userStory) => userStory.votePoint !== null).length;
+    if (numVotedUser == 0) throw new Error('No user has voted yet');
     story.avgPoint = story.userStories.reduce((previousValue, currentValue) => previousValue + currentValue.votePoint, 0) / story.userStories.length;
     return this.storiesRepository.save(story);
   }
@@ -48,10 +42,6 @@ export class StoriesService {
   }
 
   findOne(id: string): Promise<Story> {
-    return this.storiesRepository.findOneBy({ id: id });
-  }
-
-  async remove(id: string): Promise<void> {
-    await this.storiesRepository.delete(id);
+    return this.storiesRepository.findOneBy({ id });
   }
 }

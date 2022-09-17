@@ -9,6 +9,7 @@ interface ICreate {
 interface IUpdate extends ICreate {
   id: string;
 }
+
 @Injectable()
 export class UsersService {
   constructor(
@@ -33,11 +34,26 @@ export class UsersService {
   }
 
   findOne(id: string) {
-    if (!id) return null;
     return this.usersRepository.findOneBy({ id });
   }
 
-  async remove(id: string): Promise<void> {
-    await this.usersRepository.delete(id);
+  async findUSR({ roomId, storyId }) {
+    const usr = [];
+    const ur = await this.usersRepository.find({
+      where: { userRooms: { roomId } },
+      relations: { userRooms: true },
+    });
+    if (storyId)
+      usr.push(
+        ...(await this.usersRepository.find({
+          where: { userRooms: { roomId }, userStories: { storyId } },
+          relations: { userRooms: true, userStories: true },
+        })),
+      );
+    const data = ur.map(({ id, name, userRooms: [{ isOnline }] }) => {
+      const votePoint = usr.filter((item) => item.id === id)[0]?.userStories?.[0].votePoint;
+      return { id, name, isOnline, votePoint };
+    });
+    return data;
   }
 }

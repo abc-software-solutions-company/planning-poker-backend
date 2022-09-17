@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PoolsService } from '../pool/index.service';
+import { UsersService } from '../user/index.service';
 import { Room } from './index.entity';
 
 interface ICreate {
@@ -20,6 +21,7 @@ export class RoomsService {
     @InjectRepository(Room)
     private readonly roomsRepository: Repository<Room>,
     private readonly poolsService: PoolsService,
+    private readonly usersService: UsersService,
   ) {}
 
   async create({ name, hostUserId }: ICreate) {
@@ -42,7 +44,7 @@ export class RoomsService {
     return this.roomsRepository.save(room);
   }
 
-  async findAll(): Promise<Room[]> {
+  findAll(): Promise<Room[]> {
     return this.roomsRepository.find();
   }
 
@@ -50,20 +52,16 @@ export class RoomsService {
     return this.roomsRepository.findOneBy({ id: id });
   }
 
-  findFullOne(id: string): Promise<Room> {
-    const room = this.roomsRepository
-      .createQueryBuilder('room')
-      .leftJoinAndSelect('room.userRooms', 'userRooms')
-      .leftJoinAndSelect('room.stories', 'stories')
-      .leftJoinAndSelect('stories.userStories', 'userStories')
-      .leftJoinAndSelect('userRooms.user', 'user')
-      .leftJoinAndSelect('user.userStories', 'userStories2')
-      .where('room.id=:id', { id })
-      .getOne();
-    return room;
-  }
-
-  async remove(id: string): Promise<void> {
-    await this.roomsRepository.delete(id);
+  async findFullOne(id: string) {
+    const roomQuery = await this.roomsRepository.findOne({
+      select: { stories: { id: true, name: true, avgPoint: true } },
+      where: { id },
+      relations: { stories: true },
+    });
+    const { stories, ...room } = roomQuery;
+    const story = stories?.[stories.length - 1];
+    const users = await this.usersService.findUSR({ roomId: id, storyId: story?.id });
+    const data = { ...room, story, users };
+    return data;
   }
 }

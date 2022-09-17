@@ -38,7 +38,7 @@ export class UserStoriesService {
     return this.userStoriesRepository.findOneBy({ userId, storyId });
   }
 
-  findFullByStory(storyId: string): Promise<UserStory[]> {
-    return this.userStoriesRepository.findBy({ storyId });
+  findAll(): Promise<UserStory[]> {
+    return this.userStoriesRepository.find();
   }
 }

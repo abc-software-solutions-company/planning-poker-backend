@@ -6,13 +6,13 @@ export class SocketsGateway {
   @WebSocketServer()
   server: Server;
 
-  @SubscribeMessage('room')
-  room(@MessageBody() data: any, @ConnectedSocket() socket: Socket) {
+  @SubscribeMessage('joinRoom')
+  joinRoom(@MessageBody() data: any, @ConnectedSocket() socket: Socket) {
     socket.join(String(data.roomId));
   }
 
-  @SubscribeMessage('update')
-  update(@MessageBody() data: any) {
-    this.server.to(String(data.roomId)).emit('update');
+  @SubscribeMessage('updateRoom')
+  updateRoom(@MessageBody() data: any) {
+    this.server.to(String(data.roomId)).emit('updateRoom');
   }
 }

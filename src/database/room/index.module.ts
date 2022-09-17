@@ -5,9 +5,10 @@ import { RoomsController } from './index.controller';
 import { RoomsService } from './index.service';
 import { PoolsModule } from '../pool/index.module';
 import { AuthModule } from 'src/auth/auth.module';
+import { UsersModule } from '../user/index.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Room]), PoolsModule, AuthModule],
+  imports: [TypeOrmModule.forFeature([Room]), PoolsModule, AuthModule, UsersModule],
   providers: [RoomsService],
   controllers: [RoomsController],
   exports: [RoomsService],

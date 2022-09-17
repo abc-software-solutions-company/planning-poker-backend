@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, Max, MaxLength, Min } from 'class-validator';
+import { IsNotEmpty, MaxLength } from 'class-validator';
 
 export class CreateStoryDto {
   @ApiProperty({ example: 'string(256)' })
@@ -24,10 +24,4 @@ export class CompleteStoryDto {
   @IsNotEmpty()
   @MaxLength(64)
   id: string;
-
-  @ApiProperty({ example: 'float[0-21]' })
-  @Min(1)
-  @Max(21)
-  @IsNumber()
-  avgPoint: number;
 }

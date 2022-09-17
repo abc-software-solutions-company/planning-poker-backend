@@ -1,4 +1,4 @@
-import { Body, Controller, Patch, Get, UseGuards, Req } from '@nestjs/common';
+import { Body, Controller, Patch, Get, UseGuards, Req, Param } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { IRequest } from 'src/utils/type';
@@ -18,10 +18,9 @@ export class UsersController {
     return this.usersService.update({ ...body, id: req.user.id });
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Get('infor')
-  infor(@Req() req: IRequest) {
-    return req.user;
+  @Get(':id')
+  findOne(@Param('id') id: string): Promise<User> {
+    return this.usersService.findOne(id);
   }
 
   @Get()

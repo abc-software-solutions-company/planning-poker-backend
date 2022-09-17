@@ -31,15 +31,11 @@ export class UserRoomsService {
     return this.userRoomsRepository.save(userRoom);
   }
 
-  async findAll(): Promise<UserRoom[]> {
+  findAll(): Promise<UserRoom[]> {
     return this.userRoomsRepository.find();
   }
 
   findOne(userId: string, roomId: string): Promise<UserRoom> {
     return this.userRoomsRepository.findOneBy({ userId, roomId });
-  }
-
-  async remove(userId: string, roomId: string): Promise<void> {
-    await this.userRoomsRepository.delete({ userId, roomId });
   }
 }

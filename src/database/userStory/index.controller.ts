@@ -10,29 +10,28 @@ import { UserStoriesService } from './index.service';
 @ApiTags('UserStory')
 @Controller('userStories')
 export class UserStoriesController {
-  constructor(private readonly userRoomService: UserStoriesService) {}
+  constructor(private readonly userStoryService: UserStoriesService) {}
 
   @UseGuards(JwtAuthGuard)
   @Post()
   create(@Req() req: IRequest, @Body() body: CreateUserStoryDto): Promise<UserStory> {
-    return this.userRoomService.create({ userId: req.user.id, ...body });
+    return this.userStoryService.create({ userId: req.user.id, ...body });
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch()
   update(@Req() req: IRequest, @Body() body: UpdateUserStoryDto): Promise<UserStory> {
-    return this.userRoomService.update({ userId: req.user.id, ...body });
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get(':userId/:storyId')
-  findFullOne(@Param('userId') userId: string, @Param('storyId') storyId: string): Promise<UserStory> {
-    return this.userRoomService.findOne(userId, storyId);
+    return this.userStoryService.update({ userId: req.user.id, ...body });
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':storyId')
-  findFullByStory(@Param('storyId') storyId: string): Promise<UserStory[]> {
-    return this.userRoomService.findFullByStory(storyId);
+  find(@Req() req: IRequest, @Param('storyId') storyId: string): Promise<UserStory> {
+    return this.userStoryService.findOne(req.user.id, storyId);
+  }
+
+  @Get()
+  findAll(): Promise<UserStory[]> {
+    return this.userStoryService.findAll();
   }
 }

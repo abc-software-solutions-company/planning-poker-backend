@@ -25,15 +25,13 @@ export class UserRoomsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get()
-  findAll(@Req() req: IRequest): Promise<UserRoom[]> {
-    console.log(req.user);
-    return this.userRoomService.findAll();
+  @Get('/:roomId')
+  findOne(@Req() req: IRequest, @Param('roomId') roomId: string): Promise<UserRoom> {
+    return this.userRoomService.findOne(req.user.id, roomId);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Get(':userId/:roomId')
-  findOne(@Param('userId') userId: string, @Param('roomId') roomId: string): Promise<UserRoom> {
-    return this.userRoomService.findOne(userId, roomId);
+  @Get()
+  findAll(): Promise<UserRoom[]> {
+    return this.userRoomService.findAll();
   }
 }

@@ -30,7 +30,7 @@ export class RoomsController {
   }
 
   @Get(':id')
-  findFullOne(@Param('id') id: string): Promise<Room> {
+  findFullOne(@Param('id') id: string) {
     return this.roomsService.findFullOne(id);
   }
 }

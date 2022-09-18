@@ -11,8 +11,8 @@ export class SocketsGateway {
     socket.join(String(data.roomId));
   }
 
-  @SubscribeMessage('updateRoom')
+  @SubscribeMessage('UpdateRoom')
   updateRoom(@MessageBody() data: any) {
-    this.server.to(String(data.roomId)).emit('updateRoom');
+    this.server.to(String(data.roomId)).emit('UpdateRoom');
   }
 }

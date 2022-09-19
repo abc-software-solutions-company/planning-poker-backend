@@ -19,7 +19,9 @@ export class UserStoriesService {
     private readonly userStoriesRepository: Repository<UserStory>,
   ) {}
 
-  create({ userId, storyId }: ICreate): Promise<UserStory> {
+  async create({ userId, storyId }: ICreate): Promise<UserStory> {
+    const isExisted = await this.userStoriesRepository.findOneBy({ userId, storyId });
+    if (isExisted) throw new MethodNotAllowedException();
     const userStory = new UserStory();
     userStory.userId = userId;
     userStory.storyId = storyId;

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, MethodNotAllowedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserRoom } from './index.entity';
@@ -17,7 +17,10 @@ export class UserRoomsService {
     private readonly userRoomsRepository: Repository<UserRoom>,
   ) {}
 
-  create({ userId, roomId }: ICreate): Promise<UserRoom> {
+  async create({ userId, roomId }: ICreate): Promise<UserRoom> {
+    const isExisted = await this.userRoomsRepository.findOneBy({ userId, roomId });
+    console.log('🚀 ~ file: index.service.ts ~ line 22 ~ UserRoomsService ~ create ~ isExisted', isExisted);
+    if (isExisted) throw new MethodNotAllowedException();
     const userRoom = new UserRoom();
     userRoom.userId = userId;
     userRoom.roomId = roomId;

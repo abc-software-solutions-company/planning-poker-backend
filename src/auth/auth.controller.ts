@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from 'src/database/user/index.dto';
 import { IRequest } from 'src/utils/type';
@@ -18,7 +18,9 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get('verify')
-  verify(@Req() req: IRequest) {
-    return req.user;
+  async verify(@Req() { user }: IRequest) {
+    const auth = await this.authService.verify({ id: user.id });
+    if (!auth || auth.id !== user.id) throw new UnauthorizedException();
+    return auth;
   }
 }

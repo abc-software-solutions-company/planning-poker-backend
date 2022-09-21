@@ -15,4 +15,7 @@ export class AuthService {
       user,
     };
   }
+  verify({ id }: { id: string }) {
+    return this.usersService.findOne(id);
+  }
 }

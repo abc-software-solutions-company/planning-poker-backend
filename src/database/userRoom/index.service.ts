@@ -19,7 +19,6 @@ export class UserRoomsService {
 
   async create({ userId, roomId }: ICreate): Promise<UserRoom> {
     const isExisted = await this.userRoomsRepository.findOneBy({ userId, roomId });
-    console.log('🚀 ~ file: index.service.ts ~ line 22 ~ UserRoomsService ~ create ~ isExisted', isExisted);
     if (isExisted) throw new MethodNotAllowedException();
     const userRoom = new UserRoom();
     userRoom.userId = userId;
@@ -30,7 +29,8 @@ export class UserRoomsService {
 
   async update({ userId, roomId, isOnline }: IUpdate): Promise<UserRoom> {
     const userRoom = await this.userRoomsRepository.findOneBy({ userId, roomId });
-    userRoom.isOnline = isOnline || userRoom.isOnline;
+    if (!userRoom) throw new MethodNotAllowedException();
+    userRoom.isOnline = isOnline;
     return this.userRoomsRepository.save(userRoom);
   }
 

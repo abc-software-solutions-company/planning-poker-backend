@@ -30,8 +30,9 @@ export class UserStoriesService {
   }
 
   async update({ userId, storyId, votePoint }: IUpdate): Promise<UserStory> {
-    if (!votePointArr.includes(votePoint)) throw new MethodNotAllowedException('This vote point does not allow');
+    if (!votePointArr.includes(votePoint)) throw new MethodNotAllowedException();
     const userStory = await this.userStoriesRepository.findOneBy({ userId, storyId });
+    if (!userStory) throw new MethodNotAllowedException();
     userStory.votePoint = votePoint;
     return this.userStoriesRepository.save(userStory);
   }

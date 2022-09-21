@@ -42,6 +42,7 @@ export class UsersService {
     const ur = await this.usersRepository.find({
       where: { userRooms: { roomId } },
       relations: { userRooms: true },
+      order: { userRooms: { isOnline: 'DESC' } },
     });
     if (storyId)
       usr.push(

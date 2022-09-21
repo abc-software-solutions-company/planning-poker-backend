@@ -31,14 +31,13 @@ export class SocketsGateway implements OnGatewayDisconnect, OnGatewayConnection 
   };
 
   @SubscribeMessage('Toast')
-  toast(@ConnectedSocket() socket: Socket, @MessageBody() data) {
-    console.log('🚀 ~ file: index.gateway.ts ~ line 27 ~ SocketsGateway ~ toast ~ data', data);
+  handleToast(@ConnectedSocket() socket: Socket, @MessageBody() data) {
     const { roomId } = socket.handshake.auth;
     this.server.to(roomId).emit('Toast', data);
   }
 
   @SubscribeMessage('JoinRoom')
-  joinRoom(@ConnectedSocket() socket: Socket) {
+  handleJoinRoom(@ConnectedSocket() socket: Socket) {
     const { name, roomId } = socket.handshake.auth;
     const toast: IToastItem = {
       type: 'info',
@@ -50,7 +49,7 @@ export class SocketsGateway implements OnGatewayDisconnect, OnGatewayConnection 
   }
 
   @SubscribeMessage('UpdateRoom')
-  updateRoom(@ConnectedSocket() socket: Socket) {
+  handleUpdateRoom(@ConnectedSocket() socket: Socket) {
     const { roomId } = socket.handshake.auth;
     this.server.to(roomId).emit('UpdateRoom');
   }

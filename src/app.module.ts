@@ -9,13 +9,13 @@ import { RoomsModule } from './database/room/index.module';
 import { UsersModule } from './database/user/index.module';
 import { StoriesModule } from './database/story/index.module';
 import { APP_FILTER } from '@nestjs/core';
-import { AllExceptionsFilter } from './utils/all-exception.filter';
 import { SocketsModule } from './socket/socket.module';
 import { UserRoomsModule } from './database/userRoom/index.module';
 import { UserStoriesModule } from './database/userStory/index.module';
 import { PoolsModule } from './database/pool/index.module';
 import { LoggerMiddleware } from './utils/logger.middleware';
 import { AuthModule } from './auth/auth.module';
+import { HttpExceptionFilter } from './utils/http-exception.filter';
 
 @Module({
   imports: [
@@ -43,7 +43,7 @@ import { AuthModule } from './auth/auth.module';
   providers: [
     {
       provide: APP_FILTER,
-      useClass: AllExceptionsFilter,
+      useClass: HttpExceptionFilter,
     },
   ],
 })

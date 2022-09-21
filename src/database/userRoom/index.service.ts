@@ -29,7 +29,7 @@ export class UserRoomsService {
 
   async update({ userId, roomId, isOnline }: IUpdate): Promise<UserRoom> {
     const userRoom = await this.userRoomsRepository.findOneBy({ userId, roomId });
-    if (!userRoom) throw new MethodNotAllowedException();
+    if (!userRoom) return null;
     userRoom.isOnline = isOnline;
     return this.userRoomsRepository.save(userRoom);
   }

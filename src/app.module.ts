@@ -10,7 +10,7 @@ import { UsersModule } from './database/user/index.module';
 import { StoriesModule } from './database/story/index.module';
 import { APP_FILTER } from '@nestjs/core';
 import { AllExceptionsFilter } from './utils/all-exception.filter';
-import { SocketsModule } from './socket/index.module';
+import { SocketsModule } from './socket/socket.module';
 import { UserRoomsModule } from './database/userRoom/index.module';
 import { UserStoriesModule } from './database/userStory/index.module';
 import { PoolsModule } from './database/pool/index.module';

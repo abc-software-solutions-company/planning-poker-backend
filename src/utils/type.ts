@@ -7,3 +7,11 @@ export interface IRequestUser {
 export interface IRequest extends Request {
   user: { id: string; name: string };
 }
+
+export interface IToastItem {
+  type?: 'info' | 'danger' | 'success' | 'warning';
+  title?: string;
+  content?: string;
+  icon?: string;
+  lifeTime?: number;
+}

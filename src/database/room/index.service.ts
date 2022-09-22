@@ -61,6 +61,7 @@ export class RoomsService {
     const { stories, ...room } = roomQuery;
     const story = stories?.[stories.length - 1];
     const users = await this.usersService.findUSR({ roomId: id, storyId: story?.id });
+    users.sort((user) => (user.id === room.hostUserId ? -1 : 1));
     const data = { ...room, story, users };
     return data;
   }

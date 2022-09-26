@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './index.entity';
+import { v4 as uuidv4 } from 'uuid';
 
 interface ICreate {
   name: string;
@@ -17,8 +18,15 @@ export class UsersService {
     private readonly usersRepository: Repository<User>,
   ) {}
 
-  create({ name }: ICreate): Promise<User> {
+  async create({ name }: ICreate): Promise<User> {
+    let id = uuidv4();
+    let isExisted = await this.usersRepository.findOneBy({ id });
+    while (isExisted) {
+      id = uuidv4();
+      isExisted = await this.usersRepository.findOneBy({ id });
+    }
     const user = new User();
+    user.id = id;
     user.name = name;
     return this.usersRepository.save(user);
   }

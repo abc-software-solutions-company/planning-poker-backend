@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Repository } from 'typeorm';
 import { CompleteStoryDto, CreateStoryDto, UpdateStoryDto } from './index.dto';
 import { Story } from './index.entity';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class StoriesService {
@@ -12,11 +13,14 @@ export class StoriesService {
   ) {}
 
   async create({ name, roomId }: CreateStoryDto) {
-    const roomStories = await this.storiesRepository.find({ where: { roomId, avgPoint: IsNull() } });
-    if (roomStories.length > 0) {
-      throw new MethodNotAllowedException();
+    let id = uuidv4();
+    let isExisted = await this.storiesRepository.findOneBy({ id });
+    while (isExisted) {
+      id = uuidv4();
+      isExisted = await this.storiesRepository.findOneBy({ id });
     }
     const story = new Story();
+    story.id = id;
     story.name = name;
     story.roomId = roomId;
     story.avgPoint = null;

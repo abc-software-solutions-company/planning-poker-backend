@@ -1,5 +1,5 @@
-import { Room } from 'src/database/room/index.entity';
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, UpdateDateColumn } from 'typeorm';
+import { Room } from '../room/index.entity';
 import { UserRoom } from '../userRoom/index.entity';
 import { UserStory } from '../userStory/index.entity';
 

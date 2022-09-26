@@ -1,6 +1,5 @@
-import { Body, Controller, Patch, Get, UseGuards, Req, Param } from '@nestjs/common';
+import { Body, Controller, Patch, Get, Req, Param } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { IRequest } from 'src/utils/type';
 import { UpdateUserDto } from './index.dto';
 import { User } from './index.entity';
@@ -12,7 +11,6 @@ import { UsersService } from './index.service';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Patch()
   update(@Req() req: IRequest, @Body() body: UpdateUserDto): Promise<User> {
     return this.usersService.update({ ...body, id: req.user.id });

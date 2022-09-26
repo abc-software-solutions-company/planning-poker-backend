@@ -11,6 +11,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       type: this.configService.get('database.type'),
       host: this.configService.get('database.host'),
       port: this.configService.get('database.port'),
+      schema: this.configService.get('database.schema'),
       username: this.configService.get('database.username'),
       password: this.configService.get('database.password'),
       database: this.configService.get('database.name'),

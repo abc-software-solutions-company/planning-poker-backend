@@ -8,7 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
 
-  const config = new DocumentBuilder().setTitle('Planning Pocker API').setVersion('').addBearerAuth().build();
+  const config = new DocumentBuilder().setTitle('Planning Pocker API aaaa').setVersion('').addBearerAuth().build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 

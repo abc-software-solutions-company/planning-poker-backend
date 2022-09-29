@@ -1,17 +1,17 @@
+import { Story } from 'src/story/story.entity';
+import { User } from 'src/user/user.entity';
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn, UpdateDateColumn } from 'typeorm';
-import { Room } from '../room/index.entity';
-import { User } from '../user/index.entity';
 
 @Entity()
-export class UserRoom {
+export class UserStory {
   @PrimaryColumn()
   userId: string;
 
   @PrimaryColumn()
-  roomId: string;
+  storyId: string;
 
-  @Column({ type: 'boolean', default: true })
-  isOnline: boolean;
+  @Column({ type: 'int', nullable: true })
+  votePoint: number;
 
   @CreateDateColumn({
     type: 'timestamp',
@@ -28,11 +28,11 @@ export class UserRoom {
   })
   updatedAt: Date;
 
+  @ManyToOne(() => Story, (story) => story.id)
+  @JoinColumn({ name: 'storyId' })
+  story: Story;
+
   @ManyToOne(() => User, (user) => user.id)
   @JoinColumn({ name: 'userId' })
   user: User;
-
-  @ManyToOne(() => Room, (room) => room.id)
-  @JoinColumn({ name: 'roomId' })
-  room: Room;
 }

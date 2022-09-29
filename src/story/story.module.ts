@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Story } from './index.entity';
-import { StoriesController } from './index.controller';
-import { StoriesService } from './index.service';
+import { Story } from './story.entity';
+import { StoriesController } from './story.controller';
+import { StoriesService } from './story.service';
 import { AuthModule } from 'src/auth/auth.module';
 
 @Module({

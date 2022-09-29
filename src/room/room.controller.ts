@@ -2,9 +2,9 @@ import { Body, Controller, Post, Patch, Get, Param, UseGuards, Req } from '@nest
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { IRequest } from 'src/utils/type';
-import { CreateRoomDto, UpdateRoomDto } from './index.dto';
-import { Room } from './index.entity';
-import { RoomsService } from './index.service';
+import { CreateRoomDto, UpdateRoomDto } from './room.dto';
+import { Room } from './room.entity';
+import { RoomsService } from './room.service';
 
 @ApiBearerAuth()
 @ApiTags('Rooms')

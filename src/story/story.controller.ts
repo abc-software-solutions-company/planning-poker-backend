@@ -1,9 +1,9 @@
 import { Body, Controller, Post, Patch, Param, Get, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { CompleteStoryDto, CreateStoryDto, UpdateStoryDto } from './index.dto';
-import { Story } from './index.entity';
-import { StoriesService } from './index.service';
+import { CompleteStoryDto, CreateStoryDto, UpdateStoryDto } from './story.dto';
+import { Story } from './story.entity';
+import { StoriesService } from './story.service';
 
 @ApiBearerAuth()
 @ApiTags('Stories')

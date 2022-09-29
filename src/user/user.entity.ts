@@ -1,12 +1,7 @@
-import { Room } from 'src/database/room/index.entity';
+import { Room } from 'src/room/room.entity';
+import { UserRoom } from 'src/userRoom/userRoom.entity';
+import { UserStory } from 'src/userStory/userStory.entity';
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, UpdateDateColumn } from 'typeorm';
-<<<<<<< Updated upstream:src/database/user/index.entity.ts
-import { UserRoom } from '../userRoom/index.entity';
-=======
-import { Room } from '../room/room.entity';
-import { UserRoom } from '../userRoom/userRoom.entity';
->>>>>>> Stashed changes:src/user/user.entity.ts
-import { UserStory } from '../userStory/index.entity';
 
 @Entity()
 export class User {

@@ -1,7 +1,7 @@
 import { Injectable, MethodNotAllowedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserStory } from './index.entity';
+import { UserStory } from './userStory.entity';
 
 const votePointArr = [0, 1, 2, 3, 5, 8, 13, 21];
 interface ICreate {

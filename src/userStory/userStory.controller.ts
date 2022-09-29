@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { IRequest } from 'src/utils/type';
 import { CreateUserStoryDto, UpdateUserStoryDto } from './userStory.dto';
-import { UserStory } from './index.entity';
+import { UserStory } from './userStory.entity';
 import { UserStoriesService } from './userStory.service';
 
 @ApiBearerAuth()

@@ -1,6 +1,6 @@
+import { Room } from 'src/room/room.entity';
+import { UserStory } from 'src/userStory/userStory.entity';
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn, UpdateDateColumn } from 'typeorm';
-import { Room } from '../room/room.entity';
-import { UserStory } from '../userStory/index.entity';
 
 @Entity()
 export class Story {

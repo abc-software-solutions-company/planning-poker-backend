@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn, UpdateDateColumn } from 'typeorm';
-import { Room } from '../room/index.entity';
-import { User } from '../user/index.entity';
+import { Room } from '../room/room.entity';
+import { User } from '../user/user.entity';
 
 @Entity()
 export class UserRoom {

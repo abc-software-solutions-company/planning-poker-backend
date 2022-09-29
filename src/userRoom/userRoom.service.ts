@@ -1,7 +1,7 @@
 import { Injectable, MethodNotAllowedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserRoom } from './index.entity';
+import { UserRoom } from './userRoom.entity';
 
 interface ICreate {
   userId: string;

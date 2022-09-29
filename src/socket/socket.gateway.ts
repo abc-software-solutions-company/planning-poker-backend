@@ -8,7 +8,7 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { UserRoomsService } from 'src/database/userRoom/index.service';
+import { UserRoomsService } from 'src/userRoom/userRoom.service';
 import { IToastItem } from 'src/utils/type';
 
 @WebSocketGateway({ cors: { origin: '*' } })

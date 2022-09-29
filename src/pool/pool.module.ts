@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Pool } from './index.entity';
-import { PoolsController } from './index.controller';
-import { PoolsService } from './index.service';
+import { Pool } from './pool.entity';
+import { PoolsController } from './pool.controller';
+import { PoolsService } from './pool.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Pool])],

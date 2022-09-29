@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn, UpdateDateColumn } from 'typeorm';
-import { Story } from '../story/index.entity';
-import { User } from '../user/index.entity';
+import { Story } from '../story/story.entity';
+import { User } from '../user/user.entity';
 
 @Entity()
 export class UserStory {

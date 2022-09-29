@@ -11,3 +11,14 @@ services:
       PGTZ: 'Asia/Saigon'
     ports:
       - ${DATABASE_PORT}:5432
+  postgres-test:
+    image: postgres:14.5
+    container_name: planning-poker-test-db
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+      TZ: 'Asia/Saigon'
+      PGTZ: 'Asia/Saigon'
+    ports:
+      - 5435:5432

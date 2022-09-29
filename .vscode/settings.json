@@ -1,7 +1,12 @@
 {
   "files.exclude": {
+<<<<<<< Updated upstream
     "node_modules/": true
     // "dist/": true
+=======
+    "node_modules/": true,
+    "dist/": true
+>>>>>>> Stashed changes
     // "src/*/*.spec.ts": true
     // "nginx/": true,
     // ".swc/": true,

@@ -1,8 +1,8 @@
-import { Injectable, MethodNotAllowedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IsNull, Repository } from 'typeorm';
-import { CompleteStoryDto, CreateStoryDto, UpdateStoryDto } from './index.dto';
-import { Story } from './index.entity';
+import { Repository } from 'typeorm';
+import { CompleteStoryDto, CreateStoryDto, UpdateStoryDto } from './story.dto';
+import { Story } from './story.entity';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()

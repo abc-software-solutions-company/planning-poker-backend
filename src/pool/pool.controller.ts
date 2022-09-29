@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { GeneratePoolDto } from './index.dto';
-import { Pool } from './index.entity';
-import { PoolsService } from './index.service';
+import { GeneratePoolDto } from './pool.dto';
+import { Pool } from './pool.entity';
+import { PoolsService } from './pool.service';
 
 @ApiTags('Pools')
 @Controller('pools')
@@ -23,9 +23,4 @@ export class PoolsController {
   findOne(@Param('id') id: string): Promise<Pool> {
     return this.poolsService.findOne(id);
   }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string): Promise<void> {
-  //   return this.poolsService.remove(id);
-  // }
 }

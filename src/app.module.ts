@@ -7,7 +7,6 @@ import databaseConfig from './config/database.config';
 import { TypeOrmConfigService } from './database/typeorm-config.service';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { SocketsModule } from './socket/socket.module';
-import { LoggerMiddleware } from './utils/logger.middleware';
 import { AuthModule } from './auth/auth.module';
 import { HttpExceptionFilter } from './utils/http-exception.filter';
 import { UsersModule } from './user/user.module';
@@ -17,6 +16,7 @@ import { UserRoomsModule } from './userRoom/userRoom.module';
 import { UserStoriesModule } from './userStory/userStory.module';
 import { PoolsModule } from './pool/pool.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { ApiKeyMiddleware } from './utils/api-key.middleware';
 
 @Module({
   imports: [
@@ -33,8 +33,8 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
       },
     }),
     ThrottlerModule.forRoot({
-      ttl: 60,
-      limit: 10,
+      ttl: 30,
+      limit: 100,
     }),
     UsersModule,
     StoriesModule,
@@ -58,6 +58,6 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('*');
+    consumer.apply(ApiKeyMiddleware).forRoutes('*');
   }
 }

@@ -1,5 +1,10 @@
 import { registerAs } from '@nestjs/config';
 
-export default registerAs('app', () => ({
-  port: parseInt(process.env.APP_PORT || process.env.PORT, 10) || 3333,
-}));
+export default registerAs('app', () => {
+  let cors: any = process.env.CORS;
+  if (process.env.NODE_ENV !== 'product') cors = '*';
+  return {
+    port: parseInt(process.env.APP_PORT || process.env.PORT, 10) || 3333,
+    cors,
+  };
+});

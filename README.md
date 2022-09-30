@@ -1,11 +1,11 @@
 # plan-pocker-cms
 
-node v14
+node v16
 
 ## first run
 
 ```bash
-cp .envsample .env
+cp .env.dev .env
 ```
 
 ```bash

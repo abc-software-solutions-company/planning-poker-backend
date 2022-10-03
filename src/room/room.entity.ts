@@ -1,7 +1,7 @@
+import { Story } from 'src/story/story.entity';
+import { User } from 'src/user/user.entity';
+import { UserRoom } from 'src/userRoom/userRoom.entity';
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn, UpdateDateColumn } from 'typeorm';
-import { Story } from '../story/story.entity';
-import { UserRoom } from '../userRoom/userRoom.entity';
-import { User } from '../user/user.entity';
 
 @Entity()
 export class Room {

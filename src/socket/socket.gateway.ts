@@ -45,12 +45,17 @@ export class SocketsGateway implements OnGatewayDisconnect, OnGatewayConnection 
       content: `${name} joined the room`,
     };
     this.server.to(roomId).except(socket.id).emit('Toast', toast);
-    this.server.to(roomId).emit('UpdateRoom');
   }
 
   @SubscribeMessage('UpdateRoom')
   handleUpdateRoom(@ConnectedSocket() socket: Socket) {
     const { roomId } = socket.handshake.auth;
     this.server.to(roomId).emit('UpdateRoom');
+  }
+
+  @SubscribeMessage('UpdateRoomExceptMe')
+  handleUpdateRoomExceptMe(@ConnectedSocket() socket: Socket) {
+    const { roomId } = socket.handshake.auth;
+    this.server.to(roomId).except(socket.id).emit('UpdateRoomExceptMe');
   }
 }

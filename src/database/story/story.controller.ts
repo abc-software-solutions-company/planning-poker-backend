@@ -1,6 +1,7 @@
-import { Body, Controller, Post, Patch, Param, Get, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Patch, Param, Get, UseGuards, MethodNotAllowedException } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { StoryTypes } from 'src/utils/constants';
 import { CompleteStoryDto, CreateStoryDto, UpdateStoryDto } from './story.dto';
 import { Story } from './story.entity';
 import { StoriesService } from './story.service';
@@ -14,6 +15,7 @@ export class StoriesController {
   @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createStoryDto: CreateStoryDto) {
+    if (!Object.keys(StoryTypes).includes(createStoryDto.type)) throw new MethodNotAllowedException();
     return this.storiesService.create(createStoryDto);
   }
 

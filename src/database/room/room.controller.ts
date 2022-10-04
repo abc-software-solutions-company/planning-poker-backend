@@ -1,9 +1,9 @@
-import { Body, Controller, Post, Patch, Get, Param, UseGuards, Req } from '@nestjs/common';
+import { Body, Controller, Post, Get, Param, UseGuards, Req } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { SkipThrottle } from '@nestjs/throttler';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { IRequest } from 'src/utils/type';
-import { CreateRoomDto, UpdateRoomDto } from './room.dto';
+import { CreateRoomDto } from './room.dto';
 import { Room } from './room.entity';
 import { RoomsService } from './room.service';
 
@@ -19,14 +19,6 @@ export class RoomsController {
   @Post()
   create(@Req() req: IRequest, @Body() body: CreateRoomDto): Promise<Room> {
     return this.roomsService.create({ ...body, hostUserId: req.user.id });
-  }
-
-  @SkipThrottle()
-  @SkipThrottle(false)
-  @UseGuards(JwtAuthGuard)
-  @Patch()
-  update(@Body() body: UpdateRoomDto): Promise<Room> {
-    return this.roomsService.update(body);
   }
 
   @Get()

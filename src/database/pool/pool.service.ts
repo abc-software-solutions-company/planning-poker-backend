@@ -46,15 +46,14 @@ export class PoolsService {
     return this.poolsRepository.save(pool);
   }
 
-  async findAll(): Promise<Pool[]> {
-    return this.poolsRepository.find();
-  }
-
-  findOne(id: string): Promise<Pool> {
-    return this.poolsRepository.findOneBy({ id });
-  }
-
-  async remove(id: string): Promise<void> {
-    await this.poolsRepository.delete(id);
+  async status() {
+    const usage = (await this.poolsRepository.findBy({ isUsed: true })).length;
+    const all = (await this.poolsRepository.find()).length;
+    const UsageRate = ((usage * 100) / all || 0).toFixed(2);
+    return {
+      all,
+      usage,
+      UsageRate: UsageRate + ' %',
+    };
   }
 }

@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserStory } from './userStory.entity';
 
-const votePointArr = [0, 1, 2, 3, 5, 8, 13, 21];
 interface ICreate {
   userId: string;
   storyId: string;
@@ -30,7 +29,6 @@ export class UserStoriesService {
   }
 
   async update({ userId, storyId, votePoint }: IUpdate): Promise<UserStory> {
-    if (!votePointArr.includes(votePoint)) throw new MethodNotAllowedException();
     const userStory = await this.userStoriesRepository.findOneBy({ userId, storyId });
     if (!userStory) throw new MethodNotAllowedException();
     userStory.votePoint = votePoint;

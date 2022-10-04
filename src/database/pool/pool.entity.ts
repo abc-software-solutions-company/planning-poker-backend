@@ -2,7 +2,7 @@ import { Column, CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } fro
 
 @Entity()
 export class Pool {
-  @PrimaryColumn({ type: 'varchar', length: 6 })
+  @PrimaryColumn({ type: 'varchar', length: 5 })
   id: string;
 
   @Column({ type: 'boolean' })

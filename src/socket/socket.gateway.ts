@@ -8,7 +8,7 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { UserRoomsService } from 'src/userRoom/userRoom.service';
+import { UserRoomsService } from 'src/database/userRoom/userRoom.service';
 import { IToastItem } from 'src/utils/type';
 
 @WebSocketGateway({ cors: { origin: '*' } })
@@ -18,16 +18,15 @@ export class SocketsGateway implements OnGatewayDisconnect, OnGatewayConnection 
   server: Server;
 
   handleConnection = async (socket: Socket) => {
-    const { id: userId, roomId } = socket.handshake.auth;
+    const { roomId } = socket.handshake.auth;
     socket.join(roomId);
-    await this.userRoomsService.update({ userId, roomId, isOnline: true });
-    this.server.to(roomId).emit('UpdateRoom');
   };
 
   handleDisconnect = async (socket: Socket) => {
     const { id: userId, roomId } = socket.handshake.auth;
+    console.log('🚀 ~ file: socket.gateway.ts ~ line 29 ~ SocketsGateway ~ handleDisconnect= ~ socket.handshake.auth', socket.handshake.auth);
     await this.userRoomsService.update({ userId, roomId, isOnline: false });
-    this.server.to(roomId).emit('UpdateRoom');
+    this.server.to(roomId).except(socket.id).emit('UpdateRoom');
   };
 
   @SubscribeMessage('Toast')

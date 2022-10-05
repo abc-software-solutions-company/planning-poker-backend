@@ -1,22 +1,22 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
+import { AuthModule } from './auth/auth.module';
 import appConfig from './config/app.config';
 import databaseConfig from './config/database.config';
+import { PoolsModule } from './database/pool/pool.module';
+import { RoomsModule } from './database/room/room.module';
+import { StoriesModule } from './database/story/story.module';
 import { TypeOrmConfigService } from './database/typeorm-config.service';
-import { APP_FILTER, APP_GUARD } from '@nestjs/core';
+import { UsersModule } from './database/user/user.module';
+import { UserRoomsModule } from './database/userRoom/userRoom.module';
+import { UserStoriesModule } from './database/userStory/userStory.module';
 import { SocketsModule } from './socket/socket.module';
-import { AuthModule } from './auth/auth.module';
-import { HttpExceptionFilter } from './utils/http-exception.filter';
-import { UsersModule } from './user/user.module';
-import { StoriesModule } from './story/story.module';
-import { RoomsModule } from './room/room.module';
-import { UserRoomsModule } from './userRoom/userRoom.module';
-import { UserStoriesModule } from './userStory/userStory.module';
-import { PoolsModule } from './pool/pool.module';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { ApiKeyMiddleware } from './utils/api-key.middleware';
+import { HttpExceptionFilter } from './utils/http-exception.filter';
 
 @Module({
   imports: [

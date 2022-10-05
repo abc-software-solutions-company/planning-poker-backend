@@ -1,7 +1,6 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { GeneratePoolDto } from './pool.dto';
-import { Pool } from './pool.entity';
 import { PoolsService } from './pool.service';
 
 @ApiTags('Pools')
@@ -14,13 +13,8 @@ export class PoolsController {
     return this.poolsService.generate(num);
   }
 
-  @Get()
-  findAll(): Promise<Pool[]> {
-    return this.poolsService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string): Promise<Pool> {
-    return this.poolsService.findOne(id);
+  @Get('Status')
+  status() {
+    return this.poolsService.status();
   }
 }

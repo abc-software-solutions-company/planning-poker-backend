@@ -1,14 +1,15 @@
-import { Story } from 'src/story/story.entity';
-import { User } from 'src/user/user.entity';
-import { UserRoom } from 'src/userRoom/userRoom.entity';
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryColumn, UpdateDateColumn } from 'typeorm';
+import { Pool } from '../pool/pool.entity';
+import { Story } from '../story/story.entity';
+import { User } from '../user/user.entity';
+import { UserRoom } from '../userRoom/userRoom.entity';
 
 @Entity()
 export class Room {
-  @PrimaryColumn({ type: 'varchar', length: 5 })
+  @PrimaryColumn()
   id: string;
 
-  @Column({ type: 'varchar', length: 256 })
+  @Column({ type: 'varchar', length: 32 })
   name: string;
 
   @Column()
@@ -28,6 +29,10 @@ export class Room {
     select: false,
   })
   updatedAt: Date;
+
+  @OneToOne(() => Pool, (pool) => pool.id)
+  @JoinColumn({ name: 'id' })
+  pool: Pool;
 
   @ManyToOne(() => User, (user) => user.rooms)
   @JoinColumn({ name: 'hostUserId' })

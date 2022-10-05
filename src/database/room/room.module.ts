@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from 'src/auth/auth.module';
-import { PoolsModule } from 'src/pool/pool.module';
-import { UsersModule } from 'src/user/user.module';
+import { PoolsModule } from '../pool/pool.module';
+import { UsersModule } from '../user/user.module';
 import { RoomsController } from './room.controller';
 import { Room } from './room.entity';
 import { RoomsService } from './room.service';

@@ -1,7 +1,7 @@
-import { Room } from 'src/room/room.entity';
-import { UserRoom } from 'src/userRoom/userRoom.entity';
-import { UserStory } from 'src/userStory/userStory.entity';
+import { UserStory } from 'src/database/userStory/userStory.entity';
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, UpdateDateColumn } from 'typeorm';
+import { Room } from '../room/room.entity';
+import { UserRoom } from '../userRoom/userRoom.entity';
 
 @Entity()
 export class User {

@@ -41,7 +41,7 @@ export class RoomsService {
 
   async findFullOne(id: string) {
     const roomQuery = await this.roomsRepository.findOne({
-      select: { stories: { id: true, name: true, avgPoint: true } },
+      select: { stories: { id: true, name: true, avgPoint: true, type: true } },
       where: { id },
       relations: { stories: true },
     });

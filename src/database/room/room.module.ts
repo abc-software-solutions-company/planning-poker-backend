@@ -9,8 +9,8 @@ import { RoomsService } from './room.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Room]), PoolsModule, AuthModule, UsersModule],
-  providers: [RoomsService],
   controllers: [RoomsController],
+  providers: [RoomsService],
   exports: [RoomsService],
 })
 export class RoomsModule {}

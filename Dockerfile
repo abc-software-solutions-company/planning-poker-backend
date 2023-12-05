@@ -1,54 +1,26 @@
-FROM node:16-alpine AS base
+# Base image
+FROM node:16
 
-# Install dependencies only when needed
-FROM base AS deps
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk add --no-cache libc6-compat
-WORKDIR /app
+# Create app directory
+WORKDIR /usr/src/app
 
-#copy .sh file
-COPY start.sh /app/
-RUN chmod +x /app/start.sh
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+COPY package*.json ./
 
-# Install dependencies based on the preferred package manager
-COPY package.json yarn.lock  ./
-RUN yarn --frozen-lockfile
+# Install yarn and env-cmd
+RUN npm install -g env-cmd
 
-# Rebuild the source code only when needed
-FROM base AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+# Install package
+RUN yarn
+
+# Bundle app source
 COPY . .
 
-# Environment variables must be present at build time
-ENV NODE_ENV production
-ENV ENVIRONMENT_NAME production
+# Run migration
+# RUN yarn typeorm migration:run -d src/configs/data-source.ts
 
+# Creates a "dist" folder with the production build
 RUN yarn build
 
-RUN rm -rf node_modules && yarn install --production --frozen-lockfile && yarn cache clean
-
-# Production image, copy all the files and run next
-FROM base AS runner
-WORKDIR /app
-
-# Don't run production as root
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nestjs
-USER nestjs
-ENV NODE_ENV production
-# For migration and seeding
-COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/tsconfig.json ./tsconfig.json
-COPY --from=builder /app/src ./src
-# Copy env multiline file from Github Action Secret
-COPY --from=builder /app/.env ./.env
-# Copy code output and node_modules prod from builder
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-
-# Start shell script
-COPY --from=builder /app/start.sh ./dist/start.sh
-
-EXPOSE 3009
-CMD ["./dist/start.sh"]
+# Start the server using the production build
+CMD [ "node", "dist/main.js" ]

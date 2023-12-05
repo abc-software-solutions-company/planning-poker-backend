@@ -1,52 +1,54 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
-name: Auto Deploy NextJS to EC2 Instance
-
-on:
-  push:
-    branches: ['main']
+name: Deploy on server production (Planning Pocker Backend)
 
 env:
   APP_ENV: ${{ secrets.APP_ENV }}
 
+on:
+  push:
+    branches: ["main"]
+
 jobs:
-  build:
-    runs-on: self-hosted
-
-    strategy:
-      matrix:
-        node-version: [16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
+  build-and-deploy:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Pull code
+        uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - name: Extract env file multi line.
+        run: |
+          rm -r -f .env
+          touch .env_temp
+          echo $APP_ENV | tee .env_temp
+          sed 's/ /\n/g' .env_temp >> .env
+          rm -r -f .env_temp
+
+      - name: Docker
+        run: |
+          docker build -t planning-pocker-backend .
+          docker save -o planning-pocker-backend.tar planning-pocker-backend
+
+      - name: Copy Docker image to ec2 use SSH Key
+        uses: appleboy/scp-action@master
         with:
-          node-version: ${{ matrix.node-version }}
+          host: ${{ secrets.PROD_SERVER_HOST }}
+          username: ubuntu
+          port: 22
+          key: ${{ secrets.PROD_SERVER_KEY_SSH }}
+          source: "planning-pocker-backend.tar,docker-compose-ssh.yml"
+          target: "~/planning-pocker-backend"
 
-      - name: Delete old env file
-        run: rm -r -f .env
-
-      - name: Create env_temp file
-        run: touch .env_temp
-
-      - name: Copy Secret Key Multiline environment variable to .env_temp file
-        run: echo $APP_ENV | tee .env_temp
-
-      - name: Replace space character with break-line in .env
-        run: sed 's/ /\n/g' .env_temp >> .env
-
-      - name: Remove .env_temp file
-        run: rm -r -f .env_temp
-
-      - name: Install Yarn, PM2
-        run: npm install -g yarn pm2
-
-      - name: Install Node Module
-        run: yarn
-
-      - name: Build,Start and Restart Web Application
-        run: RUNNER_TRACKING_ID="" && yarn build && pm2 start yarn -- start && pm2 restart yarn
+      - name: Executing remote ssh commands using SSH Key
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.PROD_SERVER_HOST }}
+          username: ubuntu
+          port: 22
+          key: ${{ secrets.PROD_SERVER_KEY_SSH }}
+          script_stop: true
+          script: |
+            sudo docker system prune -a -f
+            cd ~/planning-pocker-backend
+            sudo snap install docker
+            sudo docker load --input planning-pocker-backend.tar
+            sudo docker-compose -f docker-compose-ssh.yml  up -d --force-recreate
+            rm -rf planning-pocker-backend.tar

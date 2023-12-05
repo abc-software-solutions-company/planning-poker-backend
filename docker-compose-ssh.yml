@@ -1,0 +1,8 @@
+version: "3"
+
+services:
+  app:
+    image: planning-pocker-backend
+    restart: always
+    ports:
+      - 3009:3009

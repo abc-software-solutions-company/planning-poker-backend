@@ -5,4 +5,4 @@ services:
     image: planning-pocker-backend
     restart: always
     ports:
-      - 3009:3009
+      - 3009:3333

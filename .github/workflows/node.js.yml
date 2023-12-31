@@ -28,7 +28,7 @@ jobs:
           docker save -o planning-pocker-backend.tar planning-pocker-backend
 
       - name: Copy Docker image to ec2 use SSH Key
-        uses: appleboy/scp-action@master
+        uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.PROD_SERVER_HOST }}
           username: ubuntu

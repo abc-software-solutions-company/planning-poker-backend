@@ -1,4 +1,4 @@
-# plan-pocker-cms 
+# Planning Pocker Backend
 
 node v16
 

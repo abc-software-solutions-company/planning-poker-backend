@@ -1,4 +1,4 @@
-name: Deploy on server production (Planning Pocker Backend)
+name: Deploy on server production (Planning Pocker API)
 
 env:
   APP_ENV: ${{ secrets.APP_ENV }}

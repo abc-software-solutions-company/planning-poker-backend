@@ -1,6 +1,6 @@
 # Planning Pocker Backend
 
-node v16
+ node v16
 
 
 ## first run
